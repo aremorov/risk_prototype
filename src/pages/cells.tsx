@@ -7,6 +7,7 @@ type CellProps = {
   xposition: number;
   yposition: number;
   population: number;
+  selectedFull: boolean;
   selected: boolean;
   handleClick: () => void;
 };
@@ -18,6 +19,7 @@ const Cell: React.FC<CellProps> = ({
   yposition,
   fillColor,
   population,
+  selectedFull,
   selected,
   handleClick,
 }) => {
@@ -30,8 +32,8 @@ const Cell: React.FC<CellProps> = ({
         x={xposition}
         y={yposition}
         fill={fillColor}
-        stroke="#000"
-        stroke-width={selected ? 10 : 0}
+        stroke={selected ? "#510" : "#000"}
+        stroke-width={selectedFull ? 10 : 0}
       />
       <text x={xposition + 45} y={yposition + 50} fill="black">
         {population}
