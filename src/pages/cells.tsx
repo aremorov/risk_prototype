@@ -1,6 +1,7 @@
 import React from "react";
 
 type CellProps = {
+  territory: string;
   cellWidth: number;
   cellHeight: number;
   fillColor: string;
@@ -13,6 +14,7 @@ type CellProps = {
 };
 
 const Cell: React.FC<CellProps> = ({
+  territory,
   cellWidth,
   cellHeight,
   xposition,
@@ -32,10 +34,13 @@ const Cell: React.FC<CellProps> = ({
         x={xposition}
         y={yposition}
         fill={fillColor}
-        stroke={selected ? "#510" : "#000"}
+        stroke={selected ? "magenta" : "black"}
         stroke-width={selectedFull ? 10 : 0}
       />
-      <text x={xposition + 45} y={yposition + 50} fill="black">
+      <text x={xposition + 25} y={yposition + 40} fill="black">
+        {territory}
+      </text>
+      <text x={xposition + 45} y={yposition + 55} fill="black">
         {population}
       </text>
     </>
