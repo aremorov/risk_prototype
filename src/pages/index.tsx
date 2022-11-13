@@ -21,7 +21,7 @@ type BaseCell = {
   nearby: string[];
 };
 
-const CellArray: BaseCell[] = [
+const cellArray: BaseCell[] = [
   {
     territory: "Canada",
     cellWidth: 100,
@@ -82,23 +82,6 @@ const CellArray: BaseCell[] = [
     population: 3,
     nearby: ["Mexico", "Columbia"],
   },
-];
-
-// const cellWidthList: number[] = [100, 100, 100, 300, 200, 100]; //territory number
-// const cellHeightList: number[] = [100, 100, 100, 100, 100, 100]; //territory number
-// const fillColorList: string[] = ["red", "green", "red", "blue", "green", "red"];
-// const xPositionList: number[] = [0, 100, 200, 0, 0, 200];
-// const yPositionList: number[] = [0, 0, 0, 100, 200, 200];
-// const populationList: number[] = [1, 3, 4, 9, 2, 3]; //I thought values are reassigned...
-
-const adjMatrix: number[][] = [
-  //6x6 matrix representing adjacency
-  [0, 1, 0, 1, 0, 0], //neighbouring first territory
-  [1, 0, 1, 1, 0, 0],
-  [0, 1, 0, 1, 0, 0],
-  [1, 1, 1, 0, 1, 1],
-  [0, 0, 0, 1, 0, 1],
-  [0, 0, 0, 1, 1, 0],
 ];
 
 const HomePage = () => {
@@ -168,10 +151,22 @@ const HomePage = () => {
   //   );
   // });
 
-  const listItems = CellArray.map((cell) => {
+  const listItems = cellArray.map((cell) => {
     return (
       <Cell
         key={1}
+        // {...{cell, selected, ccolor}}
+        // handleClick={handleClickMaker(cell)}
+
+        //above is same as below
+
+        // cell={cell}
+        // selected={selected}
+        // ccolor={ccolor}
+        // handleClick={handleClickMaker(cell)}
+
+        //do the cell.territory... stuff in the Cell function^
+
         territory={cell.territory}
         cellWidth={cell.cellWidth}
         cellHeight={cell.cellHeight}
@@ -179,9 +174,9 @@ const HomePage = () => {
         yposition={cell.yposition}
         fillColor={cell.fillColor}
         population={cell.population}
-        handleClick={handleClickMaker(cell)}
         selectedFull={cell.fillColor === ccolor}
         selected={selected === cell}
+        handleClick={handleClickMaker(cell)}
       />
     );
   });
