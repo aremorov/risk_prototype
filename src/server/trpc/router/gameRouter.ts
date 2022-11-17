@@ -14,6 +14,18 @@ type BaseCell = {
   nearby: string[];
 };
 
+type CurrentColor = "red" | "green" | "blue";
+
+type GameStateObject = {
+  cells: BaseCell[];
+  ccolor: CurrentColor;
+};
+
+const ZMove = z.object({
+  territory1: z.string(),
+  territory2: z.string(),
+});
+
 const initialCellArray: BaseCell[] = [
   {
     territory: "Canada",
@@ -77,13 +89,18 @@ const initialCellArray: BaseCell[] = [
   },
 ];
 
+const initialGameState: GameStateObject = {
+  cells: initialCellArray,
+  ccolor: "red",
+};
+
 export const gameRouter = t.router({
   //save gamestate to database
 
   newGame: t.procedure.mutation(async ({ ctx }) => {
     const game = await ctx.prisma.gameState.create({
       data: {
-        game_state: JSON.stringify(initialCellArray),
+        game_state: JSON.stringify(initialGameState),
       },
     });
 
@@ -102,7 +119,87 @@ export const gameRouter = t.router({
           },
         });
         const gameState = JSON.parse(game.game_state);
-        return gameState as BaseCell;
+        return gameState as GameStateObject;
       }
+    }),
+
+  updateMove: t.procedure
+    .input(z.object({ id: z.string(), move: ZMove }))
+    .mutation(async ({ input, ctx }) => {
+      const { id, move } = input;
+
+      //check if move is valid:
+
+      const { territory1, territory2 } = move;
+      //gets game:
+      const game = await ctx.prisma.gameState.findFirstOrThrow({
+        where: {
+          id,
+        },
+      });
+
+      let gameState = JSON.parse(game.game_state) as GameStateObject;
+
+      const { cells } = gameState;
+      let { ccolor } = gameState;
+
+      let selected = cells.find(
+        (BaseCell) => BaseCell.territory === territory1
+      );
+
+      const cell = cells.find((BaseCell) => BaseCell.territory === territory2);
+
+      let moved = false;
+
+      // Handle moving to empty cell
+      if (selected !== null) {
+        //set the necessary UI to visible here
+        if (
+          cell &&
+          selected &&
+          cell.fillColor !== selected.fillColor &&
+          selected.nearby.includes(cell.territory) &&
+          selected.population > 0 &&
+          cell.population > 0
+        ) {
+          cell.population -= 1;
+          selected.population -= 1;
+
+          //change color to next one:
+          if (ccolor === "red" && selected !== undefined) {
+            ccolor = "green";
+            selected = undefined;
+          }
+          if (ccolor === "green" && selected !== undefined) {
+            ccolor = "blue";
+            selected = undefined;
+          }
+          if (ccolor === "blue" && selected !== undefined) {
+            ccolor = "red";
+            selected = undefined;
+          }
+        } //else if (cell?.fillColor === selected?.fillColor) {
+        //   setSelected(cell); //just select another territory of same color
+        // }
+      }
+
+      gameState = {
+        cells: cells,
+        ccolor: ccolor,
+      };
+
+      {
+        await ctx.prisma.gameState.update({
+          where: {
+            id,
+          },
+          data: {
+            game_state: JSON.stringify(gameState),
+          },
+        });
+        moved = true;
+      }
+
+      return moved;
     }),
 });

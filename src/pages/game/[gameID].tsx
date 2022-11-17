@@ -24,69 +24,6 @@ type BaseCell = {
   nearby: string[];
 };
 
-const cellArray: BaseCell[] = [
-  {
-    territory: "Canada",
-    cellWidth: 100,
-    cellHeight: 100,
-    fillColor: "red",
-    xposition: 0,
-    yposition: 0,
-    population: 1,
-    nearby: ["US", "Mexico"],
-  },
-  {
-    territory: "US",
-    cellWidth: 100,
-    cellHeight: 100,
-    fillColor: "green",
-    xposition: 100,
-    yposition: 0,
-    population: 3,
-    nearby: ["Canada", "Mexico", "Cuba"],
-  },
-  {
-    territory: "Cuba",
-    cellWidth: 100,
-    cellHeight: 100,
-    fillColor: "red",
-    xposition: 200,
-    yposition: 0,
-    population: 4,
-    nearby: ["US", "Mexico"],
-  },
-  {
-    territory: "Mexico",
-    cellWidth: 300,
-    cellHeight: 100,
-    fillColor: "blue",
-    xposition: 0,
-    yposition: 100,
-    population: 9,
-    nearby: ["Canada", "US", "Cuba", "Columbia", "Brazil"],
-  },
-  {
-    territory: "Columbia",
-    cellWidth: 200,
-    cellHeight: 100,
-    fillColor: "green",
-    xposition: 0,
-    yposition: 200,
-    population: 2,
-    nearby: ["Mexico", "Brazil"],
-  },
-  {
-    territory: "Brazil",
-    cellWidth: 100,
-    cellHeight: 100,
-    fillColor: "red",
-    xposition: 200,
-    yposition: 200,
-    population: 3,
-    nearby: ["Mexico", "Columbia"],
-  },
-];
-
 const handleShare = () => {
   const gameLink = window.location.href;
 
@@ -94,13 +31,53 @@ const handleShare = () => {
 };
 
 const GamePage = () => {
+  const { query } = useRouter();
+
+  const gameStateQuery = trpc.game.getGameState.useQuery({
+    id: (query?.gameID as unknown as string) || "",
+  });
+
+  const updateMoveMutation = trpc.game.updateMove.useMutation();
+
   const [ccolor, setCcolor] = useState<string | null>(null);
   const [selected, setSelected] = useState<BaseCell | null>(null);
+  const [cells, setCells] = useState<BaseCell[]>([]);
 
-  if (ccolor === null) {
-    //set color in the beginning
-    setCcolor("red");
-  }
+  useEffect(() => {
+    const syncPieces = () => {
+      if (gameStateQuery.data) {
+        setCells(gameStateQuery.data.cells);
+        setCcolor(gameStateQuery.data.ccolor);
+      }
+    };
+    syncPieces();
+  }, [gameStateQuery.data]);
+
+  useEffect(() => {
+    const interval = setInterval(gameStateQuery.refetch, 2000);
+
+    return () => clearInterval(interval);
+  }, [gameStateQuery.refetch]);
+
+  type UpdateMoveRef = null | {
+    territory1: string;
+    territory2: string;
+  };
+
+  const updateMoveRef = useRef<UpdateMoveRef>(null);
+
+  // updateMoveRef.current = {selected, cellPiece}
+
+  useEffect(() => {
+    if (updateMoveRef.current !== null) {
+      updateMoveMutation.mutate({
+        id: query?.gameID as unknown as string,
+        move: updateMoveRef.current,
+      });
+
+      updateMoveRef.current = null;
+    }
+  }, [updateMoveMutation, query?.gameID]);
 
   const handleClickMaker = (cell: BaseCell) => () => {
     // select the cell it is on, and cell color (so all territories are shown)
@@ -108,6 +85,15 @@ const GamePage = () => {
       //setCcolor(fillColorList[index] as string); // sets color as the
       setSelected(cell);
     }
+
+    if (selected) {
+      updateMoveRef.current = {
+        territory1: selected.territory,
+        territory2: cell.territory,
+      };
+      setSelected(null);
+    }
+
     //move, if selected:
     if (selected !== null) {
       //set the necessary UI to visible here
@@ -139,28 +125,7 @@ const GamePage = () => {
     }
   };
 
-  //CHANGE TO CELL OBJECT INSTEAD OF DISTINCT LISTS
-  // const listItems = tnum.map((i) => {
-  //   if (!cellWidthList[i]) {
-  //     return null;
-  //   }
-  //   return (
-  //     <Cell
-  //       key={i}
-  //       cellWidth={cellWidthList[i]}
-  //       cellHeight={cellHeightList[i]}
-  //       xposition={xPositionList[i]}
-  //       yposition={yPositionList[i]}
-  //       fillColor={fillColorList[i]}
-  //       population={populationList[i]}
-  //       handleClick={handleClickMaker(i)}
-  //       selectedFull={fillColorList[i] === ccolor}
-  //       selected={selected === i}
-  //     />
-  //   );
-  // });
-
-  const listItems = cellArray.map((cell) => {
+  const listItems = cells.map((cell) => {
     return (
       <Cell
         key={1}
