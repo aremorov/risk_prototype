@@ -1,6 +1,6 @@
 import React from "react";
 
-type CellProps = {
+type BaseCell = {
   territory: string;
   cellWidth: number;
   cellHeight: number;
@@ -8,19 +8,18 @@ type CellProps = {
   xposition: number;
   yposition: number;
   population: number;
+  nearby: string[];
+};
+
+type CellProps = {
+  cell: BaseCell;
   selectedFull: boolean;
   selected: boolean;
   handleClick: () => void;
 };
 
 const Cell: React.FC<CellProps> = ({
-  territory,
-  cellWidth,
-  cellHeight,
-  xposition,
-  yposition,
-  fillColor,
-  population,
+  cell,
   selectedFull,
   selected,
   handleClick,
@@ -29,19 +28,19 @@ const Cell: React.FC<CellProps> = ({
     <>
       <rect
         onClick={handleClick}
-        width={cellWidth}
-        height={cellHeight}
-        x={xposition}
-        y={yposition}
-        fill={fillColor}
+        width={cell.cellWidth}
+        height={cell.cellHeight}
+        x={cell.xposition}
+        y={cell.yposition}
+        fill={cell.fillColor}
         stroke={selected ? "magenta" : "black"}
         stroke-width={selectedFull ? 10 : 0}
       />
-      <text x={xposition + 25} y={yposition + 40} fill="black">
-        {territory}
+      <text x={cell.xposition + 25} y={cell.yposition + 40} fill="black">
+        {cell.territory}
       </text>
-      <text x={xposition + 45} y={yposition + 55} fill="black">
-        {population}
+      <text x={cell.xposition + 45} y={cell.yposition + 55} fill="black">
+        {cell.population}
       </text>
     </>
   );

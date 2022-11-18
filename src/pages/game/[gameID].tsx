@@ -129,25 +129,7 @@ const GamePage = () => {
     return (
       <Cell
         key={1}
-        // {...{cell, selected, ccolor}}
-        // handleClick={handleClickMaker(cell)}
-
-        //above is same as below
-
-        // cell={cell}
-        // selected={selected}
-        // ccolor={ccolor}
-        // handleClick={handleClickMaker(cell)}
-
-        //do the cell.territory... stuff in the Cell function^
-
-        territory={cell.territory}
-        cellWidth={cell.cellWidth}
-        cellHeight={cell.cellHeight}
-        xposition={cell.xposition}
-        yposition={cell.yposition}
-        fillColor={cell.fillColor}
-        population={cell.population}
+        {...{ cell }}
         selectedFull={cell.fillColor === ccolor}
         selected={selected === cell}
         handleClick={handleClickMaker(cell)}
