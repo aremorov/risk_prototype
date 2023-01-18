@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e, 2022-07-14)"
+   sodipodi:docname="drawing.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.24173013"
+     inkscape:cx="455.05291"
+     inkscape:cy="678.44253"
+     inkscape:window-width="1470"
+     inkscape:window-height="806"
+     inkscape:window-x="46"
+     inkscape:window-y="37"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"
+     showguides="true"
+     inkscape:lockguides="false" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#000000;stroke-width:1.03524"
+       d="M 10.538661,23.945017 159.41259,48.008335 113.60523,152.28273 41.076903,172.33549 Z"
+       id="canada"
+       sodipodi:nodetypes="ccccc" />
+    <g
+       id="g548" />
+    <path
+       style="fill:#000000;stroke-width:1.03524"
+       d="M 113.60523,152.28273 277.74829,184.36715 239.57549,72.071657 159.41259,48.008335 Z"
+       id="US"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#000000;stroke-width:1.03524"
+       d="m 335.00749,108.16664 -95.432,-36.094983 38.1728,112.295493 103.06655,-32.08442 z"
+       id="Cuba"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#000000;stroke-width:1.03524"
+       d="M 37.259625,276.60988 56.346024,400.93703 209.03722,412.96871 174.68173,268.58879 Z"
+       id="columbia"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#000000;stroke-width:1.03524"
+       d="M 209.03722,412.96871 H 361.72844 L 313.46947,260.56766 174.68173,268.58879 Z"
+       id="brazil"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#000000;stroke-width:1.03524"
+       d="M 41.076903,172.33549 37.259625,276.60988 312.10382,260.56766 380.81484,152.28273 277.74829,184.36715 113.60523,152.28273 Z"
+       id="Mexico"
+       sodipodi:nodetypes="ccccccc" />
+  </g>
+</svg>

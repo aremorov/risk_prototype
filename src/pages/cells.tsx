@@ -1,9 +1,8 @@
 import React from "react";
 
 type BaseCell = {
+  shape: string;
   territory: string;
-  cellWidth: number;
-  cellHeight: number;
   fillColor: string;
   xposition: number;
   yposition: number;
@@ -26,7 +25,7 @@ const Cell: React.FC<CellProps> = ({
 }) => {
   return (
     <>
-      <rect
+      {/* <rect
         onClick={handleClick}
         width={cell.cellWidth}
         height={cell.cellHeight}
@@ -35,7 +34,18 @@ const Cell: React.FC<CellProps> = ({
         fill={cell.fillColor}
         stroke={selected ? "magenta" : "black"}
         stroke-width={selectedFull ? 10 : 0}
+      /> */}
+
+      <path
+        d={cell.shape}
+        onClick={handleClick}
+        x={cell.xposition}
+        y={cell.yposition}
+        fill={cell.fillColor}
+        stroke={selected ? "magenta" : "black"}
+        stroke-width={selectedFull ? 10 : 0}
       />
+
       <text x={cell.xposition + 25} y={cell.yposition + 40} fill="black">
         {cell.territory}
       </text>

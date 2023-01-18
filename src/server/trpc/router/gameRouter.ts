@@ -4,9 +4,8 @@ import { z } from "zod";
 //new game data:
 
 type BaseCell = {
+  shape: string;
   territory: string;
-  cellWidth: number;
-  cellHeight: number;
   fillColor: string;
   xposition: number;
   yposition: number;
@@ -28,62 +27,62 @@ const ZMove = z.object({
 
 const initialCellArray: BaseCell[] = [
   {
+    shape:
+      "M 10.538661,23.945017 159.41259,48.008335 113.60523,152.28273 41.076903,172.33549 Z",
     territory: "Canada",
-    cellWidth: 100,
-    cellHeight: 100,
     fillColor: "red",
-    xposition: 0,
-    yposition: 0,
+    xposition: 40,
+    yposition: 50,
     population: 1,
     nearby: ["US", "Mexico"],
   },
   {
+    shape:
+      "M 113.60523,152.28273 277.74829,184.36715 239.57549,72.071657 159.41259,48.008335 Z",
     territory: "US",
-    cellWidth: 100,
-    cellHeight: 100,
-    fillColor: "green",
-    xposition: 100,
-    yposition: 0,
+    fillColor: "blue",
+    xposition: 150,
+    yposition: 70,
     population: 3,
     nearby: ["Canada", "Mexico", "Cuba"],
   },
   {
+    shape:
+      "m 335.00749,108.16664 -95.432,-36.094983 38.1728,112.295493 103.06655,-32.08442 z",
     territory: "Cuba",
-    cellWidth: 100,
-    cellHeight: 100,
     fillColor: "red",
-    xposition: 200,
-    yposition: 0,
+    xposition: 250,
+    yposition: 85,
     population: 4,
     nearby: ["US", "Mexico"],
   },
   {
+    shape:
+      "M 41.076903,172.33549 37.259625,276.60988 312.10382,260.56766 380.81484,152.28273 277.74829,184.36715 113.60523,152.28273 Z",
     territory: "Mexico",
-    cellWidth: 300,
-    cellHeight: 100,
-    fillColor: "blue",
-    xposition: 0,
-    yposition: 100,
+    fillColor: "green",
+    xposition: 130,
+    yposition: 160,
     population: 9,
     nearby: ["Canada", "US", "Cuba", "Columbia", "Brazil"],
   },
   {
+    shape:
+      "M 37.259625,276.60988 56.346024,400.93703 209.03722,412.96871 174.68173,268.58879 Z",
     territory: "Columbia",
-    cellWidth: 200,
-    cellHeight: 100,
-    fillColor: "green",
-    xposition: 0,
-    yposition: 200,
+    fillColor: "blue",
+    xposition: 60,
+    yposition: 300,
     population: 2,
     nearby: ["Mexico", "Brazil"],
   },
   {
+    shape:
+      "M 209.03722,412.96871 H 361.72844 L 313.46947,260.56766 174.68173,268.58879 Z",
     territory: "Brazil",
-    cellWidth: 100,
-    cellHeight: 100,
     fillColor: "red",
-    xposition: 200,
-    yposition: 200,
+    xposition: 220,
+    yposition: 300,
     population: 3,
     nearby: ["Mexico", "Columbia"],
   },

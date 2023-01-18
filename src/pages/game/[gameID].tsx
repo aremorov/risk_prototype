@@ -14,9 +14,8 @@ for (let i = 0; i < 7; i++) {
 }
 
 type BaseCell = {
+  shape: string;
   territory: string;
-  cellWidth: number;
-  cellHeight: number;
   fillColor: string;
   xposition: number;
   yposition: number;
@@ -143,6 +142,7 @@ const GamePage = () => {
       <svg height="500" width="500">
         {listItems}
       </svg>
+
       <button className={blueButtonStyle} type="button" onClick={handleShare}>
         share game link
       </button>
