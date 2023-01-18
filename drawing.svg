@@ -25,11 +25,11 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.24173013"
-     inkscape:cx="455.05291"
-     inkscape:cy="678.44253"
+     inkscape:cx="-231.6633"
+     inkscape:cy="1009.3901"
      inkscape:window-width="1470"
      inkscape:window-height="806"
-     inkscape:window-x="46"
+     inkscape:window-x="0"
      inkscape:window-y="37"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1"
@@ -43,7 +43,7 @@
      id="layer1">
     <path
        style="fill:#000000;stroke-width:1.03524"
-       d="M 10.538661,23.945017 159.41259,48.008335 113.60523,152.28273 41.076903,172.33549 Z"
+       d="M 13.822281,25.039557 162.69621,49.102875 116.88885,153.37727 44.360523,173.43003 Z"
        id="canada"
        sodipodi:nodetypes="ccccc" />
     <g
@@ -52,11 +52,6 @@
        style="fill:#000000;stroke-width:1.03524"
        d="M 113.60523,152.28273 277.74829,184.36715 239.57549,72.071657 159.41259,48.008335 Z"
        id="US"
-       sodipodi:nodetypes="ccccc" />
-    <path
-       style="fill:#000000;stroke-width:1.03524"
-       d="m 335.00749,108.16664 -95.432,-36.094983 38.1728,112.295493 103.06655,-32.08442 z"
-       id="Cuba"
        sodipodi:nodetypes="ccccc" />
     <path
        style="fill:#000000;stroke-width:1.03524"
@@ -73,5 +68,11 @@
        d="M 41.076903,172.33549 37.259625,276.60988 312.10382,260.56766 380.81484,152.28273 277.74829,184.36715 113.60523,152.28273 Z"
        id="Mexico"
        sodipodi:nodetypes="ccccccc" />
+
+    <path
+       style="fill:#000000;stroke-width:0.264583"
+       d="M 239.70429,73.334189 276.91866,184.97728 378.71088,153.23562 332.74021,79.90143 Z"
+       id="cuba"
+       inkscape:label="#cuba" />
   </g>
 </svg>
