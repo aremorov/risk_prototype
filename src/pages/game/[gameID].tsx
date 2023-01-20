@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
-import Cell from "../cells";
-import Form from "../form";
+import Cell from "../../components/Cell";
+import Form from "../../components/Form";
 import { trpc } from "../../utils/trpc";
 
 const blueButtonStyle =
