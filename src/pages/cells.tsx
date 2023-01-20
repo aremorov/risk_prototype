@@ -43,7 +43,7 @@ const Cell: React.FC<CellProps> = ({
         y={cell.yposition}
         fill={cell.fillColor}
         stroke={selected ? "magenta" : "black"}
-        stroke-width={selectedFull ? 10 : 0}
+        strokeWidth={selectedFull ? 10 : 0}
       />
 
       <text x={cell.xposition + 25} y={cell.yposition + 40} fill="black">

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { FC, ReactNode, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Cell from "../cells";
 import Form from "../form";
 import { trpc } from "../../utils/trpc";
@@ -25,7 +25,6 @@ type BaseCell = {
 
 const handleShare = () => {
   const gameLink = window.location.href;
-
   navigator.clipboard.writeText(gameLink);
 };
 
@@ -127,7 +126,7 @@ const GamePage = () => {
   const listItems = cells.map((cell) => {
     return (
       <Cell
-        key={1}
+        key={cell.territory}
         {...{ cell }}
         selectedFull={cell.fillColor === ccolor}
         selected={selected === cell}
