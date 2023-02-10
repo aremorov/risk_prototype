@@ -6,6 +6,7 @@ type BaseCell = {
   fillColor: string;
   xposition: number;
   yposition: number;
+  troop: string;
   population: number;
   nearby: string[];
 };
@@ -49,8 +50,8 @@ const Cell: React.FC<CellProps> = ({
       <text x={cell.xposition + 25} y={cell.yposition + 40} fill="black">
         {cell.territory}
       </text>
-      <text x={cell.xposition + 45} y={cell.yposition + 55} fill="black">
-        {cell.population}
+      <text x={cell.xposition} y={cell.yposition + 55} fill="black">
+        {cell.troop + " " + cell.population.toString()}
       </text>
     </>
   );

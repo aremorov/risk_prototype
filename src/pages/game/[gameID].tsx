@@ -19,6 +19,7 @@ type BaseCell = {
   fillColor: string;
   xposition: number;
   yposition: number;
+  troop: string;
   population: number;
   nearby: string[];
 };
