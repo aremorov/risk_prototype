@@ -96,13 +96,21 @@ const GamePage = () => {
     if (selected !== null) {
       //set the necessary UI to visible here
       if (
+        cell &&
+        selected &&
+        cell.fillColor &&
+        ccolor &&
         cell.fillColor !== selected.fillColor &&
         selected.nearby.includes(cell.territory) &&
-        selected.population > 0 &&
-        cell.population > 0
+        cell.population >= 0 &&
+        selected.population > 1
       ) {
-        cell.population -= 1;
-        selected.population -= 1;
+        if (cell.population < selected.population) {
+          cell.fillColor = ccolor; //change color
+        }
+        //attack with all troops - 1
+        cell.population = Math.abs(cell.population - selected.population + 1); //attacked cell
+        selected.population = 1; //attacking cell
 
         //change color to next one:
         if (ccolor === "red" && selected !== null) {
