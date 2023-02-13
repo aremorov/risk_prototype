@@ -31,7 +31,7 @@ const initialCellArray: BaseCell[] = [
   {
     shape: "M 0,0 100,0 100,100 0,100 Z",
     territory: "A0",
-    fillColor: "blue",
+    fillColor: "red",
     xposition: 20,
     yposition: 20,
     troop: "air",
@@ -41,10 +41,10 @@ const initialCellArray: BaseCell[] = [
   {
     shape: "M 100,0 200,0 200,100 100,100 Z",
     territory: "A1",
-    fillColor: "red",
+    fillColor: "blue",
     xposition: 120,
     yposition: 20,
-    troop: "melee",
+    troop: "air",
     population: 4,
     nearby: ["A0", "A2", "A6"],
   },
@@ -427,7 +427,7 @@ export const gameRouter = t.router({
           selected.population > 1
         ) {
           //now have to describe what happens for each possible interaction: melee, ranged, air
-
+          //air attacking:
           if (selected.troop == "air") {
             //attacking with air
             if (cell.troop == "melee") {
@@ -453,6 +453,153 @@ export const gameRouter = t.router({
                 cell.population = battleResults;
                 selected.population = 1; //attacking cell
                 cell.troop = "air"; //change troop type
+              }
+              if (battleResults < 0) {
+                //defenders win, just change population
+                cell.population = -battleResults;
+                selected.population = 1; //attacking cell
+              }
+            }
+            if (cell.troop == "air") {
+              const airvsair: BattleConditions = {
+                attackers: selected.population - 1,
+                defenders: cell.population,
+                attackerHealth: 5,
+                defenderHealth: 5,
+                attackerDamage: 3,
+                defenderDamage: 3,
+              };
+              const battleResults = battle(airvsair);
+              if (battleResults > 0) {
+                //attackers win
+                cell.fillColor = ccolor;
+                cell.population = battleResults;
+                selected.population = 1; //attacking cell
+                cell.troop = "air"; //change troop type
+              }
+              if (battleResults < 0) {
+                //defenders win, just change population
+                cell.population = -battleResults;
+                selected.population = 1; //attacking cell
+              }
+            }
+          }
+          //melee attacking (can not attack air):
+          if (selected.troop == "melee") {
+            //melee beat ranged:
+            if (cell.troop == "ranged") {
+              const meleevsranged: BattleConditions = {
+                attackers: selected.population - 1,
+                defenders: cell.population,
+                attackerHealth: 5,
+                defenderHealth: 3,
+                attackerDamage: 2,
+                defenderDamage: 1,
+              };
+              const battleResults = battle(meleevsranged);
+              if (battleResults > 0) {
+                //attackers win
+                cell.fillColor = ccolor;
+                cell.population = battleResults;
+                selected.population = 1; //attacking cell
+                cell.troop = "melee"; //change troop type
+              }
+              if (battleResults < 0) {
+                //defenders win, just change population
+                cell.population = -battleResults;
+                selected.population = 1; //attacking cell
+              }
+            }
+            if (cell.troop == "melee") {
+              const meleevsmelee: BattleConditions = {
+                attackers: selected.population - 1,
+                defenders: cell.population,
+                attackerHealth: 5,
+                defenderHealth: 5,
+                attackerDamage: 2,
+                defenderDamage: 2,
+              };
+              const battleResults = battle(meleevsmelee);
+              if (battleResults > 0) {
+                //attackers win
+                cell.fillColor = ccolor;
+                cell.population = battleResults;
+                selected.population = 1; //attacking cell
+                cell.troop = "melee"; //change troop type
+              }
+              if (battleResults < 0) {
+                //defenders win, just change population
+                cell.population = -battleResults;
+                selected.population = 1; //attacking cell
+              }
+            }
+          }
+
+          //range attacking
+          if (selected.troop == "ranged") {
+            //melee beat ranged:
+            if (cell.troop == "melee") {
+              const rangedvsmelee: BattleConditions = {
+                attackers: selected.population - 1,
+                defenders: cell.population,
+                attackerHealth: 3,
+                defenderHealth: 5,
+                attackerDamage: 1,
+                defenderDamage: 2,
+              };
+              const battleResults = battle(rangedvsmelee);
+              if (battleResults > 0) {
+                //attackers win
+                cell.fillColor = ccolor;
+                cell.population = battleResults;
+                selected.population = 1; //attacking cell
+                cell.troop = "ranged"; //change troop type
+              }
+              if (battleResults < 0) {
+                //defenders win, just change population
+                cell.population = -battleResults;
+                selected.population = 1; //attacking cell
+              }
+            }
+            if (cell.troop == "ranged") {
+              const rangedvsranged: BattleConditions = {
+                attackers: selected.population - 1,
+                defenders: cell.population,
+                attackerHealth: 3,
+                defenderHealth: 3,
+                attackerDamage: 2,
+                defenderDamage: 2,
+              };
+              const battleResults = battle(rangedvsranged);
+              if (battleResults > 0) {
+                //attackers win
+                cell.fillColor = ccolor;
+                cell.population = battleResults;
+                selected.population = 1; //attacking cell
+                cell.troop = "ranged"; //change troop type
+              }
+              if (battleResults < 0) {
+                //defenders win, just change population
+                cell.population = -battleResults;
+                selected.population = 1; //attacking cell
+              }
+            }
+            if (cell.troop == "air") {
+              const rangedvsair: BattleConditions = {
+                attackers: selected.population - 1,
+                defenders: cell.population,
+                attackerHealth: 3,
+                defenderHealth: 5,
+                attackerDamage: 3,
+                defenderDamage: 1,
+              };
+              const battleResults = battle(rangedvsair);
+              if (battleResults > 0) {
+                //attackers win
+                cell.fillColor = ccolor;
+                cell.population = battleResults;
+                selected.population = 1; //attacking cell
+                cell.troop = "ranged"; //change troop type
               }
               if (battleResults < 0) {
                 //defenders win, just change population
