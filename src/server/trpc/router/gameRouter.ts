@@ -352,11 +352,6 @@ const battle = (battleconditions: BattleConditions): number => {
         attackerArmy = attackerArmy.filter((x) => x > 0);
       }
     }
-
-    //console.log("Attackers");
-    //console.log(attackerArmy);
-    //console.log("Defenders");
-    //console.log(defenderArmy);
   }
   //positive value: Attackers win, negative: defenders win, if both are 0, defender wins with 1 troop left
   return attackerArmy.length > 0
@@ -443,7 +438,27 @@ export const gameRouter = t.router({
               cell.troop = "air"; //change troop type
             }
             if (cell.troop == "ranged") {
-              selected.population = Math.floor(Math.random() * 10);
+              const airvsranged: BattleConditions = {
+                attackers: selected.population - 1,
+                defenders: cell.population,
+                attackerHealth: 5,
+                defenderHealth: 3,
+                attackerDamage: 1,
+                defenderDamage: 3,
+              };
+              const battleResults = battle(airvsranged);
+              if (battleResults > 0) {
+                //attackers win
+                cell.fillColor = ccolor;
+                cell.population = battleResults;
+                selected.population = 1; //attacking cell
+                cell.troop = "air"; //change troop type
+              }
+              if (battleResults < 0) {
+                //defenders win, just change population
+                cell.population = -battleResults;
+                selected.population = 1; //attacking cell
+              }
             }
           }
 
