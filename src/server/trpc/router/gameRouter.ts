@@ -285,24 +285,36 @@ const initialGameState: GameStateObject = {
   ccolor: "red",
 };
 
+type troopAttributes = {
+  health: number;
+  damage: number;
+};
+
 type BattleConditions = {
   attackers: number;
   defenders: number;
-  attackerHealth: number;
-  defenderHealth: number;
-  attackerDamage: number;
-  defenderDamage: number;
+  attackerAttributes: troopAttributes;
+  defenderAttributes: troopAttributes;
+  attackerBonus: number;
+  defenderBonus: number;
 };
 
 const battle = (battleconditions: BattleConditions): number => {
   const {
     attackers,
     defenders,
-    attackerHealth,
-    defenderHealth,
-    attackerDamage,
-    defenderDamage,
+    attackerAttributes,
+    defenderAttributes,
+    attackerBonus,
+    defenderBonus,
   } = battleconditions;
+
+  const attackerHealth = attackerAttributes.health * attackerBonus;
+  const attackerDamage = attackerAttributes.damage;
+
+  const defenderHealth = defenderAttributes.health * defenderBonus;
+  const defenderDamage = defenderAttributes.damage;
+
   let attackerArmy = Array(attackers);
   attackerArmy.fill(attackerHealth);
 
@@ -357,6 +369,23 @@ const battle = (battleconditions: BattleConditions): number => {
   return attackerArmy.length > 0
     ? attackerArmy.length
     : Math.min(-1, -defenderArmy.length);
+};
+
+//attributes of different troops:
+
+const meleeAttributes: troopAttributes = {
+  health: 10,
+  damage: 2,
+};
+
+const rangedAttributes: troopAttributes = {
+  health: 10,
+  damage: 2,
+};
+
+const airAttributes: troopAttributes = {
+  health: 10,
+  damage: 2,
 };
 
 export const gameRouter = t.router({
@@ -431,7 +460,7 @@ export const gameRouter = t.router({
           if (selected.troop == "air") {
             //attacking with air
             if (cell.troop == "melee") {
-              //attack melee
+              //beat melee
               cell.fillColor = ccolor;
               cell.population = selected.population - 1; //defeat all melee
               selected.population = 1; //attacking cell
@@ -441,10 +470,10 @@ export const gameRouter = t.router({
               const airvsranged: BattleConditions = {
                 attackers: selected.population - 1,
                 defenders: cell.population,
-                attackerHealth: 5,
-                defenderHealth: 3,
-                attackerDamage: 1,
-                defenderDamage: 3,
+                attackerAttributes: airAttributes,
+                defenderAttributes: rangedAttributes,
+                attackerBonus: 1,
+                defenderBonus: 2,
               };
               const battleResults = battle(airvsranged);
               if (battleResults > 0) {
@@ -464,10 +493,10 @@ export const gameRouter = t.router({
               const airvsair: BattleConditions = {
                 attackers: selected.population - 1,
                 defenders: cell.population,
-                attackerHealth: 5,
-                defenderHealth: 5,
-                attackerDamage: 3,
-                defenderDamage: 3,
+                attackerAttributes: airAttributes,
+                defenderAttributes: airAttributes,
+                attackerBonus: 1,
+                defenderBonus: 1,
               };
               const battleResults = battle(airvsair);
               if (battleResults > 0) {
@@ -491,10 +520,10 @@ export const gameRouter = t.router({
               const meleevsranged: BattleConditions = {
                 attackers: selected.population - 1,
                 defenders: cell.population,
-                attackerHealth: 5,
-                defenderHealth: 3,
-                attackerDamage: 2,
-                defenderDamage: 1,
+                attackerAttributes: meleeAttributes,
+                defenderAttributes: rangedAttributes,
+                attackerBonus: 2,
+                defenderBonus: 1,
               };
               const battleResults = battle(meleevsranged);
               if (battleResults > 0) {
@@ -514,10 +543,10 @@ export const gameRouter = t.router({
               const meleevsmelee: BattleConditions = {
                 attackers: selected.population - 1,
                 defenders: cell.population,
-                attackerHealth: 5,
-                defenderHealth: 5,
-                attackerDamage: 2,
-                defenderDamage: 2,
+                attackerAttributes: meleeAttributes,
+                defenderAttributes: meleeAttributes,
+                attackerBonus: 1,
+                defenderBonus: 1,
               };
               const battleResults = battle(meleevsmelee);
               if (battleResults > 0) {
@@ -542,10 +571,10 @@ export const gameRouter = t.router({
               const rangedvsmelee: BattleConditions = {
                 attackers: selected.population - 1,
                 defenders: cell.population,
-                attackerHealth: 3,
-                defenderHealth: 5,
-                attackerDamage: 1,
-                defenderDamage: 2,
+                attackerAttributes: rangedAttributes,
+                defenderAttributes: meleeAttributes,
+                attackerBonus: 1,
+                defenderBonus: 2,
               };
               const battleResults = battle(rangedvsmelee);
               if (battleResults > 0) {
@@ -565,10 +594,10 @@ export const gameRouter = t.router({
               const rangedvsranged: BattleConditions = {
                 attackers: selected.population - 1,
                 defenders: cell.population,
-                attackerHealth: 3,
-                defenderHealth: 3,
-                attackerDamage: 2,
-                defenderDamage: 2,
+                attackerAttributes: rangedAttributes,
+                defenderAttributes: rangedAttributes,
+                attackerBonus: 1,
+                defenderBonus: 1,
               };
               const battleResults = battle(rangedvsranged);
               if (battleResults > 0) {
@@ -588,10 +617,10 @@ export const gameRouter = t.router({
               const rangedvsair: BattleConditions = {
                 attackers: selected.population - 1,
                 defenders: cell.population,
-                attackerHealth: 3,
-                defenderHealth: 5,
-                attackerDamage: 3,
-                defenderDamage: 1,
+                attackerAttributes: rangedAttributes,
+                defenderAttributes: airAttributes,
+                attackerBonus: 2,
+                defenderBonus: 1,
               };
               const battleResults = battle(rangedvsair);
               if (battleResults > 0) {
