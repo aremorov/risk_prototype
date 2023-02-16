@@ -17,7 +17,7 @@ type CellProps = {
   selected: boolean;
   handleClick: () => void;
   allCells: BaseCell[];
-  ccolor: string;
+  ccolor: string | null;
 };
 
 const Cell: React.FC<CellProps> = ({
