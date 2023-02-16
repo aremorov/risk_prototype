@@ -16,6 +16,29 @@ type CellProps = {
   selectedFull: boolean;
   selected: boolean;
   handleClick: () => void;
+  allCells: BaseCell[];
+  ccolor: string;
+};
+
+const rangedNearby = (location: BaseCell): string[] => {
+  const doubleNearby: string[] = [];
+  location.nearby.forEach((territoryName) => {
+    doubleNearby.push(territoryName);
+    const nearbyCell = initialCellArray.find(
+      (cell) => cell.territory == territoryName
+    ); //find nearby cell objects
+    if (nearbyCell !== undefined) {
+      nearbyCell.nearby.forEach((nearbyTerritory) => {
+        if (
+          !doubleNearby.includes(nearbyTerritory) &&
+          nearbyTerritory !== location.territory
+        ) {
+          doubleNearby.push(nearbyTerritory);
+        }
+      });
+    }
+  });
+  return doubleNearby;
 };
 
 const Cell: React.FC<CellProps> = ({
@@ -23,7 +46,27 @@ const Cell: React.FC<CellProps> = ({
   selectedFull,
   selected,
   handleClick,
+  allCells,
+  ccolor,
 }) => {
+  let opacityLevel = 0.01;
+  if (selectedFull) {
+    opacityLevel = 1;
+  }
+
+  let nearbyCurrentColor = false;
+
+  cell.nearby.forEach((territoryName) => {
+    const nearbyCell = allCells.find((cell) => cell.territory == territoryName); //find nearby cell objects
+    if (nearbyCell && nearbyCell.fillColor == ccolor) {
+      nearbyCurrentColor = true;
+    }
+  });
+
+  if (!selectedFull && nearbyCurrentColor) {
+    opacityLevel = 0.5;
+  }
+
   return (
     <>
       {/* <rect
@@ -44,13 +87,24 @@ const Cell: React.FC<CellProps> = ({
         y={cell.yposition}
         fill={cell.fillColor}
         stroke={selected ? "magenta" : "black"}
-        strokeWidth={selectedFull ? 10 : 0}
+        stroke-width={selectedFull ? 10 : 0}
+        opacity={opacityLevel}
       />
 
-      <text x={cell.xposition + 25} y={cell.yposition + 40} fill="black">
+      <text
+        x={cell.xposition + 25}
+        y={cell.yposition + 40}
+        fill="black"
+        opacity={opacityLevel}
+      >
         {cell.territory}
       </text>
-      <text x={cell.xposition} y={cell.yposition + 55} fill="black">
+      <text
+        x={cell.xposition}
+        y={cell.yposition + 55}
+        fill="black"
+        opacity={opacityLevel}
+      >
         {cell.troop + " " + cell.population.toString()}
       </text>
     </>

@@ -134,12 +134,15 @@ const GamePage = () => {
 
   const listItems = cells.map((cell) => {
     return (
+      //NEED TO ADD IN DATA FROM ALL CELLS, SO CAN SHOW WHICH CELLS ARE NEARBY/ATTACKABLE
       <Cell
         key={cell.territory}
         {...{ cell }}
         selectedFull={cell.fillColor === ccolor}
         selected={selected === cell}
         handleClick={handleClickMaker(cell)}
+        allCells={cells}
+        {...{ ccolor }}
       />
     );
   });
