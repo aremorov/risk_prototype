@@ -20,27 +20,6 @@ type CellProps = {
   ccolor: string;
 };
 
-const rangedNearby = (location: BaseCell): string[] => {
-  const doubleNearby: string[] = [];
-  location.nearby.forEach((territoryName) => {
-    doubleNearby.push(territoryName);
-    const nearbyCell = initialCellArray.find(
-      (cell) => cell.territory == territoryName
-    ); //find nearby cell objects
-    if (nearbyCell !== undefined) {
-      nearbyCell.nearby.forEach((nearbyTerritory) => {
-        if (
-          !doubleNearby.includes(nearbyTerritory) &&
-          nearbyTerritory !== location.territory
-        ) {
-          doubleNearby.push(nearbyTerritory);
-        }
-      });
-    }
-  });
-  return doubleNearby;
-};
-
 const Cell: React.FC<CellProps> = ({
   cell,
   selectedFull,
