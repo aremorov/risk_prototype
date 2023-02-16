@@ -388,6 +388,27 @@ const airAttributes: troopAttributes = {
   damage: 2,
 };
 
+const rangedNearby = (location: BaseCell): string[] => {
+  const doubleNearby: string[] = [];
+  location.nearby.forEach((territoryName) => {
+    doubleNearby.push(territoryName);
+    const nearbyCell = initialCellArray.find(
+      (cell) => cell.territory == territoryName
+    ); //find nearby cell objects
+    if (nearbyCell !== undefined) {
+      nearbyCell.nearby.forEach((nearbyTerritory) => {
+        if (
+          !doubleNearby.includes(nearbyTerritory) &&
+          nearbyTerritory !== location.territory
+        ) {
+          doubleNearby.push(nearbyTerritory);
+        }
+      });
+    }
+  });
+  return doubleNearby;
+};
+
 export const gameRouter = t.router({
   //save gamestate to database
 
@@ -451,13 +472,15 @@ export const gameRouter = t.router({
           cell &&
           selected &&
           cell.fillColor !== selected.fillColor &&
-          selected.nearby.includes(cell.territory) &&
           cell.population >= 1 &&
           selected.population > 1
         ) {
           //now have to describe what happens for each possible interaction: melee, ranged, air
           //air attacking:
-          if (selected.troop == "air") {
+          if (
+            selected.troop == "air" &&
+            selected.nearby.includes(cell.territory)
+          ) {
             //attacking with air
             if (cell.troop == "melee") {
               //beat melee
@@ -514,7 +537,10 @@ export const gameRouter = t.router({
             }
           }
           //melee attacking (can not attack air):
-          if (selected.troop == "melee") {
+          if (
+            selected.troop == "melee" &&
+            selected.nearby.includes(cell.territory)
+          ) {
             //melee beat ranged:
             if (cell.troop == "ranged") {
               const meleevsranged: BattleConditions = {
@@ -563,9 +589,12 @@ export const gameRouter = t.router({
               }
             }
           }
-
+          const nearRanged = rangedNearby(selected);
           //range attacking
-          if (selected.troop == "ranged") {
+          if (
+            selected.troop == "ranged" &&
+            nearRanged.includes(cell.territory)
+          ) {
             //melee beat ranged:
             if (cell.troop == "melee") {
               const rangedvsmelee: BattleConditions = {
