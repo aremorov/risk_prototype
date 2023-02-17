@@ -9,7 +9,7 @@ type BaseCell = {
   troop: string;
   population: number;
   nearby: string[];
-  biome: string;
+  terrain: string;
 };
 
 type CellProps = {
@@ -29,7 +29,7 @@ const Cell: React.FC<CellProps> = ({
   allCells,
   ccolor,
 }) => {
-  let opacityLevel = 0.01;
+  let opacityLevel = 0.4;
   if (selectedFull) {
     opacityLevel = 1;
   }
@@ -85,7 +85,7 @@ const Cell: React.FC<CellProps> = ({
         fill="black"
         opacity={opacityLevel}
       >
-        {cell.biome}
+        {cell.terrain}
       </text>
       <text
         x={cell.xposition}

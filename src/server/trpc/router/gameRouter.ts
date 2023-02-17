@@ -13,7 +13,7 @@ type BaseCell = {
   troop: string;
   population: number;
   nearby: string[];
-  biome: string;
+  terrain: string;
 };
 
 type CurrentColor = "red" | "green" | "blue";
@@ -32,24 +32,24 @@ const initialCellArray: BaseCell[] = [
   {
     shape: "M 0,0 100,0 100,100 0,100 Z",
     territory: "A0",
-    fillColor: "blue",
+    fillColor: "red",
     xposition: 20,
     yposition: 20,
-    troop: "air",
-    population: 1,
+    troop: "ranged",
+    population: 10,
     nearby: ["A1", "A5"],
-    biome: "forest",
+    terrain: "hills",
   },
   {
     shape: "M 100,0 200,0 200,100 100,100 Z",
     territory: "A1",
-    fillColor: "red",
+    fillColor: "blue",
     xposition: 120,
     yposition: 20,
-    troop: "melee",
-    population: 1,
+    troop: "air",
+    population: 13,
     nearby: ["A0", "A2", "A6"],
-    biome: "forest",
+    terrain: "plains",
   },
   {
     shape: "M 200,0 300,0 300,100 200,100 Z",
@@ -60,7 +60,7 @@ const initialCellArray: BaseCell[] = [
     troop: "melee",
     population: 2,
     nearby: ["A1", "A3", "A7"],
-    biome: "forest",
+    terrain: "forest",
   },
   {
     shape: "M 300,0 400,0 400,100 300,100 Z",
@@ -71,7 +71,7 @@ const initialCellArray: BaseCell[] = [
     troop: "air",
     population: 2,
     nearby: ["A2", "A4", "A8"],
-    biome: "hills",
+    terrain: "hills",
   },
   {
     shape: "M 400,0 500,0 500,100 400,100 Z",
@@ -82,7 +82,7 @@ const initialCellArray: BaseCell[] = [
     troop: "ranged",
     population: 1,
     nearby: ["A3", "A9"],
-    biome: "hills",
+    terrain: "hills",
   },
   {
     shape: "M 0,100 100,100 100,200 0,200 Z",
@@ -93,7 +93,7 @@ const initialCellArray: BaseCell[] = [
     troop: "ranged",
     population: 3,
     nearby: ["A0", "A10", "A6"],
-    biome: "plains",
+    terrain: "plains",
   },
   {
     shape: "M 100,100 200,100 200,200 100,200 Z",
@@ -104,7 +104,7 @@ const initialCellArray: BaseCell[] = [
     troop: "melee",
     population: 1,
     nearby: ["A5", "A7", "A1", "A11"],
-    biome: "hills",
+    terrain: "hills",
   },
   {
     shape: "M 200,100 300,100 300,200 200,200 Z",
@@ -115,7 +115,7 @@ const initialCellArray: BaseCell[] = [
     troop: "melee",
     population: 6,
     nearby: ["A6", "A8", "A2", "A12"],
-    biome: "forest",
+    terrain: "forest",
   },
   {
     shape: "M 300,100 400,100 400,200 300,200 Z",
@@ -126,7 +126,7 @@ const initialCellArray: BaseCell[] = [
     troop: "melee",
     population: 6,
     nearby: ["A7", "A9", "A3", "A13"],
-    biome: "hills",
+    terrain: "hills",
   },
   {
     shape: "M 400,100 500,100 500,200 400,200 Z",
@@ -137,7 +137,7 @@ const initialCellArray: BaseCell[] = [
     troop: "air",
     population: 3,
     nearby: ["A4", "A14", "A8"],
-    biome: "hills",
+    terrain: "hills",
   },
   {
     shape: "M 0,200 100,200 100,300 0,300 Z",
@@ -148,7 +148,7 @@ const initialCellArray: BaseCell[] = [
     troop: "ranged",
     population: 8,
     nearby: ["A5", "A15", "A11"],
-    biome: "hills",
+    terrain: "hills",
   },
   {
     shape: "M 100,200 200,200 200,300 100,300 Z",
@@ -159,7 +159,7 @@ const initialCellArray: BaseCell[] = [
     troop: "air",
     population: 8,
     nearby: ["A10", "A12", "A6", "A16"],
-    biome: "hills",
+    terrain: "hills",
   },
   {
     shape: "M 200,200 300,200 300,300 200,300 Z",
@@ -170,7 +170,7 @@ const initialCellArray: BaseCell[] = [
     troop: "melee",
     population: 3,
     nearby: ["A11", "A13", "A7", "A17"],
-    biome: "forest",
+    terrain: "forest",
   },
   {
     shape: "M 300,200 400,200 400,300 300,300 Z",
@@ -181,7 +181,7 @@ const initialCellArray: BaseCell[] = [
     troop: "air",
     population: 6,
     nearby: ["A12", "A14", "A8", "A18"],
-    biome: "plains",
+    terrain: "plains",
   },
   {
     shape: "M 400,200 500,200 500,300 400,300 Z",
@@ -192,7 +192,7 @@ const initialCellArray: BaseCell[] = [
     troop: "melee",
     population: 5,
     nearby: ["A9", "A19", "A13"],
-    biome: "hills",
+    terrain: "hills",
   },
   {
     shape: "M 0,300 100,300 100,400 0,400 Z",
@@ -203,7 +203,7 @@ const initialCellArray: BaseCell[] = [
     troop: "ranged",
     population: 4,
     nearby: ["A10", "A20", "A16"],
-    biome: "forest",
+    terrain: "forest",
   },
   {
     shape: "M 100,300 200,300 200,400 100,400 Z",
@@ -214,7 +214,7 @@ const initialCellArray: BaseCell[] = [
     troop: "ranged",
     population: 8,
     nearby: ["A15", "A17", "A11", "A21"],
-    biome: "forest",
+    terrain: "forest",
   },
   {
     shape: "M 200,300 300,300 300,400 200,400 Z",
@@ -225,7 +225,7 @@ const initialCellArray: BaseCell[] = [
     troop: "air",
     population: 8,
     nearby: ["A16", "A18", "A12", "A22"],
-    biome: "forest",
+    terrain: "forest",
   },
   {
     shape: "M 300,300 400,300 400,400 300,400 Z",
@@ -236,7 +236,7 @@ const initialCellArray: BaseCell[] = [
     troop: "ranged",
     population: 9,
     nearby: ["A17", "A19", "A13", "A23"],
-    biome: "forest",
+    terrain: "forest",
   },
   {
     shape: "M 400,300 500,300 500,400 400,400 Z",
@@ -247,7 +247,7 @@ const initialCellArray: BaseCell[] = [
     troop: "air",
     population: 7,
     nearby: ["A14", "A24", "A18"],
-    biome: "forest",
+    terrain: "forest",
   },
   {
     shape: "M 0,400 100,400 100,500 0,500 Z",
@@ -258,7 +258,7 @@ const initialCellArray: BaseCell[] = [
     troop: "air",
     population: 1,
     nearby: ["A15", "A21"],
-    biome: "plains",
+    terrain: "plains",
   },
   {
     shape: "M 100,400 200,400 200,500 100,500 Z",
@@ -269,7 +269,7 @@ const initialCellArray: BaseCell[] = [
     troop: "ranged",
     population: 5,
     nearby: ["A20", "A22", "A16"],
-    biome: "forest",
+    terrain: "forest",
   },
   {
     shape: "M 200,400 300,400 300,500 200,500 Z",
@@ -280,7 +280,7 @@ const initialCellArray: BaseCell[] = [
     troop: "melee",
     population: 2,
     nearby: ["A21", "A23", "A17"],
-    biome: "forest",
+    terrain: "forest",
   },
   {
     shape: "M 300,400 400,400 400,500 300,500 Z",
@@ -291,7 +291,7 @@ const initialCellArray: BaseCell[] = [
     troop: "air",
     population: 6,
     nearby: ["A22", "A24", "A18"],
-    biome: "hills",
+    terrain: "hills",
   },
   {
     shape: "M 400,400 500,400 500,500 400,500 Z",
@@ -302,7 +302,7 @@ const initialCellArray: BaseCell[] = [
     troop: "melee",
     population: 3,
     nearby: ["A19", "A23"],
-    biome: "forest",
+    terrain: "forest",
   },
 ];
 
@@ -509,20 +509,39 @@ export const gameRouter = t.router({
           ) {
             //attacking with air
             if (cell.troop == "melee") {
-              //beat melee
-              cell.fillColor = ccolor;
-              cell.population = selected.population - 1; //defeat all melee
-              selected.population = 1; //attacking cell
-              cell.troop = "air"; //change troop type
+              const meleeForestBonus = cell.terrain == "forest" ? 4 : 2;
+              const airvsmelee: BattleConditions = {
+                attackers: selected.population - 1,
+                defenders: cell.population,
+                attackerAttributes: airAttributes,
+                defenderAttributes: meleeAttributes,
+                attackerBonus: 4,
+                defenderBonus: meleeForestBonus,
+              };
+              const battleResults = battle(airvsmelee);
+              if (battleResults > 0) {
+                //attackers win
+                cell.fillColor = ccolor;
+                cell.population = battleResults;
+                selected.population = 1; //attacking cell
+                cell.troop = "air"; //change troop type
+              }
+              if (battleResults < 0) {
+                //defenders win, just change population
+                cell.population = -battleResults;
+                selected.population = 1; //attacking cell
+              }
             }
             if (cell.troop == "ranged") {
+              //in any case, ranged should be stronger:
+              const rangedHillBonus = cell.terrain == "hills" ? 4 : 2;
               const airvsranged: BattleConditions = {
                 attackers: selected.population - 1,
                 defenders: cell.population,
                 attackerAttributes: airAttributes,
                 defenderAttributes: rangedAttributes,
                 attackerBonus: 1,
-                defenderBonus: 2,
+                defenderBonus: rangedHillBonus,
               };
               const battleResults = battle(airvsranged);
               if (battleResults > 0) {
@@ -562,20 +581,47 @@ export const gameRouter = t.router({
               }
             }
           }
-          //melee attacking (can not attack air):
+          //melee attacking
           if (
             selected.troop == "melee" &&
             selected.nearby.includes(cell.territory)
           ) {
-            //melee beat ranged:
+            //get bonus if melee attacks forest cell:
+            const meleeForestBonus = cell.terrain == "forest" ? 4 : 2;
+            //melee vs air:
+            if (cell.troop == "air") {
+              const meleevsair: BattleConditions = {
+                attackers: selected.population - 1,
+                defenders: cell.population,
+                attackerAttributes: meleeAttributes,
+                defenderAttributes: airAttributes,
+                attackerBonus: meleeForestBonus,
+                defenderBonus: 4, //need to have this match airvsmelee...
+              };
+              const battleResults = battle(meleevsair);
+              if (battleResults > 0) {
+                //attackers win
+                cell.fillColor = ccolor;
+                cell.population = battleResults;
+                selected.population = 1; //attacking cell
+                cell.troop = "melee"; //change troop type
+              }
+              if (battleResults < 0) {
+                //defenders win, just change population
+                cell.population = -battleResults;
+                selected.population = 1; //attacking cell
+              }
+            }
             if (cell.troop == "ranged") {
+              //hills have 2x bonus, but ranged have to still be regularly weaker
+              const rangedHillBonus = cell.terrain == "hills" ? 2 : 1;
               const meleevsranged: BattleConditions = {
                 attackers: selected.population - 1,
                 defenders: cell.population,
                 attackerAttributes: meleeAttributes,
                 defenderAttributes: rangedAttributes,
-                attackerBonus: 2,
-                defenderBonus: 1,
+                attackerBonus: meleeForestBonus,
+                defenderBonus: rangedHillBonus,
               };
               const battleResults = battle(meleevsranged);
               if (battleResults > 0) {
@@ -621,6 +667,8 @@ export const gameRouter = t.router({
             selected.troop == "ranged" &&
             nearRanged.includes(cell.territory)
           ) {
+            //ranged attacking bonus is from the selected cell (ranged are stationary when attacking)
+            const rangedHillBonus = selected.terrain == "hills" ? 4 : 2;
             //melee beat ranged:
             if (cell.troop == "melee") {
               const rangedvsmelee: BattleConditions = {
@@ -628,8 +676,8 @@ export const gameRouter = t.router({
                 defenders: cell.population,
                 attackerAttributes: rangedAttributes,
                 defenderAttributes: meleeAttributes,
-                attackerBonus: 1,
-                defenderBonus: 2,
+                attackerBonus: rangedHillBonus,
+                defenderBonus: 4,
               };
               const battleResults = battle(rangedvsmelee);
               if (battleResults > 0) {
@@ -646,13 +694,14 @@ export const gameRouter = t.router({
               }
             }
             if (cell.troop == "ranged") {
+              const rangedDefenderHillBonus = cell.terrain == "hills" ? 4 : 2;
               const rangedvsranged: BattleConditions = {
                 attackers: selected.population - 1,
                 defenders: cell.population,
                 attackerAttributes: rangedAttributes,
                 defenderAttributes: rangedAttributes,
-                attackerBonus: 1,
-                defenderBonus: 1,
+                attackerBonus: rangedHillBonus,
+                defenderBonus: rangedDefenderHillBonus,
               };
               const battleResults = battle(rangedvsranged);
               if (battleResults > 0) {
@@ -674,7 +723,7 @@ export const gameRouter = t.router({
                 defenders: cell.population,
                 attackerAttributes: rangedAttributes,
                 defenderAttributes: airAttributes,
-                attackerBonus: 2,
+                attackerBonus: rangedHillBonus,
                 defenderBonus: 1,
               };
               const battleResults = battle(rangedvsair);

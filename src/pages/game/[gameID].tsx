@@ -22,7 +22,7 @@ type BaseCell = {
   troop: string;
   population: number;
   nearby: string[];
-  biome: string;
+  terrain: string;
 };
 
 const handleShare = () => {
