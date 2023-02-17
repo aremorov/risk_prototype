@@ -661,7 +661,11 @@ export const gameRouter = t.router({
               }
             }
           }
-          const nearRanged = rangedNearby(selected);
+          //additional range if on hill:
+          const nearRanged =
+            selected.terrain == "hills"
+              ? rangedNearby(selected)
+              : selected.nearby;
           //range attacking
           if (
             selected.troop == "ranged" &&
