@@ -29,7 +29,7 @@ const Cell: React.FC<CellProps> = ({
   allCells,
   ccolor,
 }) => {
-  let opacityLevel = 0.4;
+  let opacityLevel = 0.2;
   if (selectedFull) {
     opacityLevel = 1;
   }
