@@ -9,6 +9,7 @@ type BaseCell = {
   troop: string;
   population: number;
   nearby: string[];
+  biome: string;
 };
 
 type CellProps = {
@@ -72,11 +73,19 @@ const Cell: React.FC<CellProps> = ({
 
       <text
         x={cell.xposition + 25}
-        y={cell.yposition + 40}
+        y={cell.yposition + 20}
         fill="black"
         opacity={opacityLevel}
       >
         {cell.territory}
+      </text>
+      <text
+        x={cell.xposition + 25}
+        y={cell.yposition + 35}
+        fill="black"
+        opacity={opacityLevel}
+      >
+        {cell.biome}
       </text>
       <text
         x={cell.xposition}
