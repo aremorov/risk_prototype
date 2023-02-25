@@ -1,5 +1,5 @@
 import { t } from "../trpc";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import React from "react";
 
 //new game data:
@@ -749,30 +749,10 @@ export const gameRouter = t.router({
               }
             }
           }
-
-          //change color to next one (next turn):
-          if (ccolor === "red" && selected !== undefined) {
-            ccolor = "green";
-            selected = undefined;
-          }
-          if (ccolor === "green" && selected !== undefined) {
-            ccolor = "blue";
-            selected = undefined;
-          }
-          if (ccolor === "blue" && selected !== undefined) {
-            ccolor = "red";
-            selected = undefined;
-          }
         } //else if (cell?.fillColor === selected?.fillColor) {
         //   setSelected(cell); //just select another territory of same color
         // }
       }
-
-      //update net worths
-      cells.forEach((cell) => {
-        const player = colorList.findIndex((color) => color == cell.fillColor);
-        netWorths[player]++;
-      });
 
       gameState = {
         cells: cells,
@@ -793,5 +773,59 @@ export const gameRouter = t.router({
       }
 
       return moved;
+    }),
+
+  nextMove: t.procedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const { id } = input;
+      const game = await ctx.prisma.gameState.findFirstOrThrow({
+        where: {
+          id,
+        },
+      });
+
+      let gameState = JSON.parse(game.game_state) as GameStateObject;
+
+      const { cells, netWorths } = gameState;
+      let { ccolor } = gameState;
+
+      //change color to next one (next turn):
+
+      let changedColor = false;
+      if (ccolor === "red" && !changedColor) {
+        ccolor = "green";
+        changedColor = true;
+      }
+      if (ccolor === "green" && !changedColor) {
+        ccolor = "blue";
+        changedColor = true;
+      }
+      if (ccolor === "blue" && !changedColor) {
+        ccolor = "red";
+        changedColor = true;
+      }
+
+      //update net worths
+      cells.forEach((cell) => {
+        const player = colorList.findIndex((color) => color == cell.fillColor);
+        netWorths[player]++;
+      });
+
+      gameState = {
+        cells: cells,
+        ccolor: ccolor,
+        netWorths: netWorths,
+      };
+
+      await ctx.prisma.gameState.update({
+        where: {
+          id,
+        },
+        data: {
+          game_state: JSON.stringify(gameState),
+        },
+      });
+      return true;
     }),
 });

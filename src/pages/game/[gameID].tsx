@@ -30,12 +30,11 @@ const GamePage = () => {
     id: (query?.gameID as unknown as string) || "",
   });
 
-  const updateMoveMutation = trpc.game.updateMove.useMutation();
-
   const [ccolor, setCcolor] = useState<string | null>(null);
   const [selected, setSelected] = useState<BaseCell | null>(null);
   const [cells, setCells] = useState<BaseCell[]>([]);
   const [netWorths, setNetWorths] = useState<number[]>([]);
+  const [nextMove, setNextMove] = useState<boolean>(false);
 
   useEffect(() => {
     const syncPieces = () => {
@@ -60,8 +59,7 @@ const GamePage = () => {
   };
 
   const updateMoveRef = useRef<UpdateMoveRef>(null);
-
-  // updateMoveRef.current = {selected, cellPiece}
+  const updateMoveMutation = trpc.game.updateMove.useMutation();
 
   useEffect(() => {
     if (updateMoveRef.current !== null) {
@@ -73,6 +71,26 @@ const GamePage = () => {
       updateMoveRef.current = null;
     }
   }, [updateMoveMutation, query?.gameID]);
+
+  //have to do this for next move update, do useEffect to prevent nextMoveMutation from happening endlessly...
+  const endMove = () => {
+    //nextMoveRef.current = true;
+    setNextMove(true);
+  };
+
+  //type NextMoveRef = true | false;
+
+  //const nextMoveRef = useRef<NextMoveRef>(false);
+  const nextMoveMutation = trpc.game.nextMove.useMutation();
+
+  useEffect(() => {
+    if (nextMove == true) {
+      nextMoveMutation.mutate({
+        id: query?.gameID as unknown as string,
+      });
+      setNextMove(false);
+    }
+  }, [nextMove, nextMoveMutation, query?.gameID]);
 
   const handleClickMaker = (cell: BaseCell) => () => {
     // select the cell it is on, and cell color (so all territories are shown)
@@ -108,20 +126,6 @@ const GamePage = () => {
         //attack with all troops - 1
         cell.population = Math.abs(cell.population - selected.population + 1); //attacked cell
         selected.population = 1; //attacking cell
-
-        //change color to next one:
-        if (ccolor === "red" && selected !== null) {
-          setCcolor("green");
-          setSelected(null);
-        }
-        if (ccolor === "green" && selected !== null) {
-          setCcolor("blue");
-          setSelected(null);
-        }
-        if (ccolor === "blue" && selected !== null) {
-          setCcolor("red");
-          setSelected(null);
-        }
       } else if (cell.fillColor === selected.fillColor) {
         setSelected(cell); //just select another territory of same color
       }
@@ -142,13 +146,13 @@ const GamePage = () => {
       />
     );
   });
-
+  //console.log(selected == null);
   return (
     <div>
       <div>Map</div>
-      <div>{netWorths[0]}</div>
-      <div>{netWorths[1]}</div>
-      <div>{netWorths[2]}</div>
+      <div>{"Red net worth: " + netWorths[0]}</div>
+      <div>{"Green net worth: " + netWorths[1]}</div>
+      <div>{"Blue net worth: " + netWorths[2]}</div>
 
       <svg height="500" width="500">
         {listItems}
@@ -156,6 +160,9 @@ const GamePage = () => {
 
       <button className={blueButtonStyle} type="button" onClick={handleShare}>
         share game link
+      </button>
+      <button className={blueButtonStyle} type="button" onClick={endMove}>
+        End Move
       </button>
     </div>
   );
