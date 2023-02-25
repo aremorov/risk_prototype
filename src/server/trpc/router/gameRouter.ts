@@ -803,6 +803,11 @@ export const gameRouter = t.router({
         ccolor = "red";
         changedColor = true;
       }
+      //update net worths
+      cells.forEach((cell) => {
+        const player = colorList.findIndex((color) => color == cell.fillColor);
+        netWorths[player]++;
+      });
 
       gameState = {
         cells: cells,
