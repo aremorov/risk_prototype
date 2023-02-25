@@ -1,6 +1,5 @@
 import { t } from "../trpc";
-import { boolean, z } from "zod";
-import React from "react";
+import { z } from "zod";
 
 //new game data:
 
@@ -16,12 +15,11 @@ type BaseCell = {
   terrain: string;
 };
 
-type CurrentColor = "red" | "green" | "blue";
 const colorList = ["red", "green", "blue"];
 
 type GameStateObject = {
   cells: BaseCell[];
-  ccolor: CurrentColor;
+  currentPlayer: number;
   netWorths: number[];
 };
 
@@ -310,7 +308,7 @@ const initialCellArray: BaseCell[] = [
 
 const initialGameState: GameStateObject = {
   cells: initialCellArray,
-  ccolor: "red",
+  currentPlayer: 0,
   netWorths: [0, 0, 0],
 };
 
@@ -484,8 +482,13 @@ export const gameRouter = t.router({
 
       let gameState = JSON.parse(game.game_state) as GameStateObject;
 
-      const { cells, ccolor, netWorths } = gameState;
+      const { cells, currentPlayer, netWorths } = gameState;
 
+      const currentColor = colorList[currentPlayer];
+      let ccolor = "red";
+      if (currentColor) {
+        ccolor = currentColor;
+      }
       const selected = cells.find(
         (BaseCell) => BaseCell.territory === territory1
       );
@@ -754,7 +757,7 @@ export const gameRouter = t.router({
 
       gameState = {
         cells: cells,
-        ccolor: ccolor,
+        currentPlayer: currentPlayer,
         netWorths: netWorths,
       };
 
@@ -786,23 +789,11 @@ export const gameRouter = t.router({
       let gameState = JSON.parse(game.game_state) as GameStateObject;
 
       const { cells, netWorths } = gameState;
-      let { ccolor } = gameState;
+      let { currentPlayer } = gameState;
 
-      //change color to next one (next turn):
+      //change player index to next one (next turn):
+      currentPlayer = (currentPlayer + 1) % 3;
 
-      let changedColor = false;
-      if (ccolor === "red" && !changedColor) {
-        ccolor = "green";
-        changedColor = true;
-      }
-      if (ccolor === "green" && !changedColor) {
-        ccolor = "blue";
-        changedColor = true;
-      }
-      if (ccolor === "blue" && !changedColor) {
-        ccolor = "red";
-        changedColor = true;
-      }
       //update net worths
       cells.forEach((cell) => {
         const player = colorList.findIndex((color) => color == cell.fillColor);
@@ -811,7 +802,7 @@ export const gameRouter = t.router({
 
       gameState = {
         cells: cells,
-        ccolor: ccolor,
+        currentPlayer: currentPlayer,
         netWorths: netWorths,
       };
 

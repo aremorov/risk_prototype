@@ -18,6 +18,8 @@ type BaseCell = {
   terrain: string;
 };
 
+const colorList = ["red", "green", "blue"];
+
 const handleShare = () => {
   const gameLink = window.location.href;
   navigator.clipboard.writeText(gameLink);
@@ -30,7 +32,7 @@ const GamePage = () => {
     id: (query?.gameID as unknown as string) || "",
   });
 
-  const [ccolor, setCcolor] = useState<string | null>(null);
+  const [currentPlayer, setCurrentPlayer] = useState<number>(0);
   const [selected, setSelected] = useState<BaseCell | null>(null);
   const [cells, setCells] = useState<BaseCell[]>([]);
   const [netWorths, setNetWorths] = useState<number[]>([]);
@@ -40,7 +42,7 @@ const GamePage = () => {
     const syncPieces = () => {
       if (gameStateQuery.data) {
         setCells(gameStateQuery.data.cells);
-        setCcolor(gameStateQuery.data.ccolor);
+        setCurrentPlayer(gameStateQuery.data.currentPlayer);
         setNetWorths(gameStateQuery.data.netWorths);
       }
     };
@@ -74,13 +76,8 @@ const GamePage = () => {
 
   //have to do this for next move update, do useEffect to prevent nextMoveMutation from happening endlessly...
   const endMove = () => {
-    //nextMoveRef.current = true;
     setNextMove(true);
   };
-
-  //type NextMoveRef = true | false;
-
-  //const nextMoveRef = useRef<NextMoveRef>(false);
   const nextMoveMutation = trpc.game.nextMove.useMutation();
 
   useEffect(() => {
@@ -93,6 +90,13 @@ const GamePage = () => {
   }, [nextMove, nextMoveMutation, query?.gameID]);
 
   const handleClickMaker = (cell: BaseCell) => () => {
+    //define current color:
+    const currentColor = colorList[currentPlayer];
+    let ccolor = "red";
+    if (currentColor) {
+      ccolor = currentColor;
+    }
+
     // select the cell it is on, and cell color (so all territories are shown)
     if (selected === null && ccolor == cell.fillColor) {
       //setCcolor(fillColorList[index] as string); // sets color as the
@@ -133,6 +137,12 @@ const GamePage = () => {
   };
 
   const listItems = cells.map((cell) => {
+    const currentColor = colorList[currentPlayer];
+    let ccolor = "red";
+    if (currentColor) {
+      ccolor = currentColor;
+    }
+
     return (
       //NEED TO ADD IN DATA FROM ALL CELLS, SO CAN SHOW WHICH CELLS ARE NEARBY/ATTACKABLE
       <Cell
