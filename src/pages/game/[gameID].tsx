@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
 import Cell from "../../components/Cell";
-import Form from "../../components/Form";
 import { trpc } from "../../utils/trpc";
 
 const blueButtonStyle =
@@ -42,12 +41,14 @@ const GamePage = () => {
   const [ccolor, setCcolor] = useState<string | null>(null);
   const [selected, setSelected] = useState<BaseCell | null>(null);
   const [cells, setCells] = useState<BaseCell[]>([]);
+  const [netWorths, setNetWorths] = useState<number[]>([]);
 
   useEffect(() => {
     const syncPieces = () => {
       if (gameStateQuery.data) {
         setCells(gameStateQuery.data.cells);
         setCcolor(gameStateQuery.data.ccolor);
+        setNetWorths(gameStateQuery.data.netWorths);
       }
     };
     syncPieces();
@@ -151,6 +152,9 @@ const GamePage = () => {
   return (
     <div>
       <div>Map</div>
+      <div>{[ccolor, ccolor]}</div>
+      <div>{netWorths}</div>
+
       <svg height="500" width="500">
         {listItems}
       </svg>

@@ -21,6 +21,7 @@ type CurrentColor = "red" | "green" | "blue";
 type GameStateObject = {
   cells: BaseCell[];
   ccolor: CurrentColor;
+  netWorths: number[];
 };
 
 const ZMove = z.object({
@@ -309,6 +310,7 @@ const initialCellArray: BaseCell[] = [
 const initialGameState: GameStateObject = {
   cells: initialCellArray,
   ccolor: "red",
+  netWorths: [0, 0, 0],
 };
 
 type troopAttributes = {
@@ -483,6 +485,7 @@ export const gameRouter = t.router({
 
       const { cells } = gameState;
       let { ccolor } = gameState;
+      const { netWorths } = gameState;
 
       let selected = cells.find(
         (BaseCell) => BaseCell.territory === territory1
@@ -767,6 +770,7 @@ export const gameRouter = t.router({
       gameState = {
         cells: cells,
         ccolor: ccolor,
+        netWorths: netWorths,
       };
 
       {
