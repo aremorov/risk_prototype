@@ -6,12 +6,6 @@ import { trpc } from "../../utils/trpc";
 const blueButtonStyle =
   "disabled:bg-slate-400 bg-blue-600 text-white py-1 px-4 rounded-md uppercase hover:bg-blue-800";
 
-const tnum: number[] = []; //territory number
-
-for (let i = 0; i < 7; i++) {
-  tnum.push(i);
-}
-
 type BaseCell = {
   shape: string;
   territory: string;
@@ -152,8 +146,9 @@ const GamePage = () => {
   return (
     <div>
       <div>Map</div>
-      <div>{[ccolor, ccolor]}</div>
-      <div>{netWorths}</div>
+      <div>{netWorths[0]}</div>
+      <div>{netWorths[1]}</div>
+      <div>{netWorths[2]}</div>
 
       <svg height="500" width="500">
         {listItems}

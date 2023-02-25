@@ -17,6 +17,7 @@ type BaseCell = {
 };
 
 type CurrentColor = "red" | "green" | "blue";
+const colorList = ["red", "green", "blue"];
 
 type GameStateObject = {
   cells: BaseCell[];
@@ -766,6 +767,12 @@ export const gameRouter = t.router({
         //   setSelected(cell); //just select another territory of same color
         // }
       }
+
+      //update net worths
+      cells.forEach((cell) => {
+        const player = colorList.findIndex((color) => color == cell.fillColor);
+        netWorths[player]++;
+      });
 
       gameState = {
         cells: cells,
