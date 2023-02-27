@@ -6,13 +6,15 @@ import { trpc } from "../../utils/trpc";
 const blueButtonStyle =
   "disabled:bg-slate-400 bg-blue-600 text-white py-1 px-4 rounded-md uppercase hover:bg-blue-800";
 
+type TroopType = "melee" | "ranged" | "air";
+
 type BaseCell = {
   shape: string;
   territory: string;
   fillColor: string;
   xposition: number;
   yposition: number;
-  troop: string;
+  troop: TroopType;
   population: number;
   nearby: string[];
   terrain: string;
@@ -94,7 +96,10 @@ const GamePage = () => {
     setTradingTroop(true);
   };
 
-  type UpdateTradingTroop = string | null;
+  type UpdateTradingTroop = null | {
+    territory: string;
+    troop: TroopType;
+  };
 
   const tradeTroopMutation = trpc.game.tradeTroop.useMutation();
   const updateTradingTroop = useRef<UpdateTradingTroop>(null);
@@ -104,7 +109,8 @@ const GamePage = () => {
       if (updateTradingTroop.current !== null) {
         tradeTroopMutation.mutate({
           id: query?.gameID as unknown as string,
-          territory: updateTradingTroop.current,
+          territory: updateTradingTroop.current.territory,
+          troop: updateTradingTroop.current.troop,
         });
         updateTradingTroop.current = null;
       }
@@ -125,7 +131,10 @@ const GamePage = () => {
     }
 
     if (cell) {
-      updateTradingTroop.current = cell.territory;
+      updateTradingTroop.current = {
+        territory: cell.territory,
+        troop: cell.troop,
+      };
     }
     if (selected) {
       updateMoveRef.current = {

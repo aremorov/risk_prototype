@@ -1,12 +1,14 @@
 import React from "react";
 
+type TroopType = "melee" | "ranged" | "air";
+
 type BaseCell = {
   shape: string;
   territory: string;
   fillColor: string;
   xposition: number;
   yposition: number;
-  troop: string;
+  troop: TroopType;
   population: number;
   nearby: string[];
   terrain: string;

@@ -3,13 +3,15 @@ import { z } from "zod";
 
 //new game data:
 
+type TroopType = "melee" | "ranged" | "air";
+
 type BaseCell = {
   shape: string;
   territory: string;
   fillColor: string;
   xposition: number;
   yposition: number;
-  troop: string;
+  troop: TroopType;
   population: number;
   nearby: string[];
   terrain: string;
@@ -309,7 +311,7 @@ const initialCellArray: BaseCell[] = [
 const initialGameState: GameStateObject = {
   cells: initialCellArray,
   currentPlayer: 0,
-  netWorths: [0, 0, 0],
+  netWorths: [10, 10, 10],
 };
 
 type troopAttributes = {
@@ -414,6 +416,11 @@ const airAttributes: troopAttributes = {
   health: 10,
   damage: 2,
 };
+
+const troopCosts = { melee: 1, ranged: 3, air: 2 }; //cost of melee, ranged, air
+
+const zTroopTypes = z.enum(["melee", "ranged", "air"]);
+type zTroopTypes = z.infer<typeof zTroopTypes>; // "melee", "ranged", "air"
 
 const rangedNearby = (location: BaseCell): string[] => {
   const doubleNearby: string[] = [];
@@ -817,9 +824,11 @@ export const gameRouter = t.router({
     }),
 
   tradeTroop: t.procedure
-    .input(z.object({ id: z.string(), territory: z.string() }))
+    .input(
+      z.object({ id: z.string(), territory: z.string(), troop: zTroopTypes })
+    )
     .mutation(async ({ input, ctx }) => {
-      const { id, territory } = input;
+      const { id, territory, troop } = input;
 
       //gets game:
       const game = await ctx.prisma.gameState.findFirstOrThrow({
@@ -844,9 +853,8 @@ export const gameRouter = t.router({
 
       if (selected && selected?.fillColor == ccolor && currentNetWorth) {
         selected.population++;
-        netWorths[currentPlayer] = currentNetWorth - 5;
+        netWorths[currentPlayer] = currentNetWorth - troopCosts[troop];
       }
-
       //update game state
       gameState = {
         cells: cells,
