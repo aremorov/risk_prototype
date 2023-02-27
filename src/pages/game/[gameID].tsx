@@ -8,6 +8,8 @@ const blueButtonStyle =
 
 type TroopType = "melee" | "ranged" | "air";
 
+type TradeType = "buy" | "sell" | null;
+
 type TroopMarket = {
   melee: number;
   ranged: number;
@@ -48,7 +50,7 @@ const GamePage = () => {
   const [troopMarketPrices, setTroopMarketPrices] =
     useState<TroopMarket>(initialTroopCosts);
   const [nextMove, setNextMove] = useState<boolean>(false);
-  const [tradingTroop, setTradingTroop] = useState<boolean>(false);
+  const [tradingTroop, setTradingTroop] = useState<TradeType>(null);
 
   useEffect(() => {
     const syncPieces = () => {
@@ -102,8 +104,8 @@ const GamePage = () => {
     }
   }, [nextMove, nextMoveMutation, query?.gameID]);
 
-  const tradeTroop = () => {
-    setTradingTroop(true);
+  const tradeTroop = (tradeType: TradeType) => {
+    setTradingTroop(tradeType);
   };
 
   type UpdateTradingTroop = null | {
@@ -121,10 +123,11 @@ const GamePage = () => {
           id: query?.gameID as unknown as string,
           territory: updateTradingTroop.current.territory,
           troop: updateTradingTroop.current.troop,
+          tradeType: tradingTroop,
         });
         updateTradingTroop.current = null;
       }
-      setTradingTroop(false);
+      setTradingTroop(null);
     }
   }, [tradingTroop, tradeTroopMutation, query?.gameID]);
 
@@ -216,13 +219,35 @@ const GamePage = () => {
         End Move
       </button>
       <div>
-        {"Melee Cost: " +
-          troopMarketPrices["melee"] +
-          ", Ranged Cost: 3, Air Cost: 2"}
+        {"Melee Buy Price: " +
+          1.1 * troopMarketPrices["melee"] +
+          ", Ranged Buy Price: " +
+          1.1 * troopMarketPrices["ranged"] +
+          ", Air Buy Price: " +
+          1.1 * troopMarketPrices["air"]}
       </div>
 
-      <button className={blueButtonStyle} type="button" onClick={tradeTroop}>
+      <div>
+        {"Melee Sell Price: " +
+          0.9 * troopMarketPrices["melee"] +
+          ", Ranged Sell Price: " +
+          0.9 * troopMarketPrices["ranged"] +
+          ", Air Sell Price: " +
+          0.9 * troopMarketPrices["air"]}
+      </div>
+      <button
+        className={blueButtonStyle}
+        type="button"
+        onClick={() => tradeTroop("buy")}
+      >
         Buy Troop
+      </button>
+      <button
+        className={blueButtonStyle}
+        type="button"
+        onClick={() => tradeTroop("sell")}
+      >
+        Sell Troop
       </button>
     </div>
   );

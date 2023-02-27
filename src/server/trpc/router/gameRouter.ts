@@ -315,6 +315,9 @@ const initialCellArray: BaseCell[] = [
   },
 ];
 
+const zTradeType = z.enum(["buy", "sell"]);
+type zTradeType = z.infer<typeof zTroopTypes>; // "melee", "ranged", "air"
+
 const initialTroopCosts = { melee: 1, ranged: 3, air: 2 }; //cost of melee, ranged, air
 
 const zTroopTypes = z.enum(["melee", "ranged", "air"]);
@@ -835,10 +838,15 @@ export const gameRouter = t.router({
 
   tradeTroop: t.procedure
     .input(
-      z.object({ id: z.string(), territory: z.string(), troop: zTroopTypes })
+      z.object({
+        id: z.string(),
+        territory: z.string(),
+        troop: zTroopTypes,
+        tradeType: zTradeType,
+      })
     )
     .mutation(async ({ input, ctx }) => {
-      const { id, territory, troop } = input;
+      const { id, territory, troop, tradeType } = input;
 
       //gets game:
       const game = await ctx.prisma.gameState.findFirstOrThrow({
@@ -862,9 +870,18 @@ export const gameRouter = t.router({
       const currentNetWorth = netWorths[currentPlayer];
 
       if (selected && selected?.fillColor == ccolor && currentNetWorth) {
-        selected.population++;
-        netWorths[currentPlayer] = currentNetWorth - troopMarket[troop];
-        troopMarket[troop] = troopMarket[troop] * 1.1;
+        if (tradeType == "buy") {
+          troopMarket[troop] = troopMarket[troop] * 1.1;
+          selected.population++;
+          //get filled at changed price
+          netWorths[currentPlayer] = currentNetWorth - troopMarket[troop];
+        }
+        if (tradeType == "sell") {
+          troopMarket[troop] = troopMarket[troop] * 0.9;
+          selected.population++;
+          //get filled at changed price:
+          netWorths[currentPlayer] = currentNetWorth + troopMarket[troop];
+        }
       }
       //update game state
       gameState = {
