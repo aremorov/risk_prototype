@@ -8,6 +8,13 @@ const blueButtonStyle =
 
 type TroopType = "melee" | "ranged" | "air";
 
+type TroopMarket = {
+  melee: number;
+  ranged: number;
+  air: number;
+};
+const initialTroopCosts = { melee: 1, ranged: 3, air: 2 }; //cost of melee, ranged, air
+
 type BaseCell = {
   shape: string;
   territory: string;
@@ -38,6 +45,8 @@ const GamePage = () => {
   const [selected, setSelected] = useState<BaseCell | null>(null);
   const [cells, setCells] = useState<BaseCell[]>([]);
   const [netWorths, setNetWorths] = useState<number[]>([]);
+  const [troopMarketPrices, setTroopMarketPrices] =
+    useState<TroopMarket>(initialTroopCosts);
   const [nextMove, setNextMove] = useState<boolean>(false);
   const [tradingTroop, setTradingTroop] = useState<boolean>(false);
 
@@ -47,6 +56,7 @@ const GamePage = () => {
         setCells(gameStateQuery.data.cells);
         setCurrentPlayer(gameStateQuery.data.currentPlayer);
         setNetWorths(gameStateQuery.data.netWorths);
+        setTroopMarketPrices(gameStateQuery.data.troopMarket);
       }
     };
     syncPieces();
@@ -205,7 +215,11 @@ const GamePage = () => {
       <button className={blueButtonStyle} type="button" onClick={endMove}>
         End Move
       </button>
-      <div>{"Melee Cost: 1, Ranged Cost: 3, Air Cost: 2"}</div>
+      <div>
+        {"Melee Cost: " +
+          troopMarketPrices["melee"] +
+          ", Ranged Cost: 3, Air Cost: 2"}
+      </div>
 
       <button className={blueButtonStyle} type="button" onClick={tradeTroop}>
         Buy Troop

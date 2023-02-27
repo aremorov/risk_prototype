@@ -19,10 +19,17 @@ type BaseCell = {
 
 const colorList = ["red", "green", "blue"];
 
+type TroopMarket = {
+  melee: number;
+  ranged: number;
+  air: number;
+};
+
 type GameStateObject = {
   cells: BaseCell[];
   currentPlayer: number;
   netWorths: number[];
+  troopMarket: TroopMarket;
 };
 
 const ZMove = z.object({
@@ -308,10 +315,16 @@ const initialCellArray: BaseCell[] = [
   },
 ];
 
+const initialTroopCosts = { melee: 1, ranged: 3, air: 2 }; //cost of melee, ranged, air
+
+const zTroopTypes = z.enum(["melee", "ranged", "air"]);
+type zTroopTypes = z.infer<typeof zTroopTypes>; // "melee", "ranged", "air"
+
 const initialGameState: GameStateObject = {
   cells: initialCellArray,
   currentPlayer: 0,
   netWorths: [10, 10, 10],
+  troopMarket: initialTroopCosts,
 };
 
 type troopAttributes = {
@@ -417,11 +430,6 @@ const airAttributes: troopAttributes = {
   damage: 2,
 };
 
-const troopCosts = { melee: 1, ranged: 3, air: 2 }; //cost of melee, ranged, air
-
-const zTroopTypes = z.enum(["melee", "ranged", "air"]);
-type zTroopTypes = z.infer<typeof zTroopTypes>; // "melee", "ranged", "air"
-
 const rangedNearby = (location: BaseCell): string[] => {
   const doubleNearby: string[] = [];
   location.nearby.forEach((territoryName) => {
@@ -489,7 +497,7 @@ export const gameRouter = t.router({
 
       let gameState = JSON.parse(game.game_state) as GameStateObject;
 
-      const { cells, currentPlayer, netWorths } = gameState;
+      const { cells, currentPlayer, netWorths, troopMarket } = gameState;
 
       const currentColor = colorList[currentPlayer];
       let ccolor;
@@ -765,6 +773,7 @@ export const gameRouter = t.router({
         cells: cells,
         currentPlayer: currentPlayer,
         netWorths: netWorths,
+        troopMarket: troopMarket,
       };
 
       {
@@ -794,7 +803,7 @@ export const gameRouter = t.router({
 
       let gameState = JSON.parse(game.game_state) as GameStateObject;
 
-      const { cells, netWorths } = gameState;
+      const { cells, netWorths, troopMarket } = gameState;
       let { currentPlayer } = gameState;
 
       //change player index to next one (next turn):
@@ -810,6 +819,7 @@ export const gameRouter = t.router({
         cells: cells,
         currentPlayer: currentPlayer,
         netWorths: netWorths,
+        troopMarket: troopMarket,
       };
 
       await ctx.prisma.gameState.update({
@@ -839,7 +849,7 @@ export const gameRouter = t.router({
       //get game state data
       let gameState = JSON.parse(game.game_state) as GameStateObject;
 
-      const { cells, currentPlayer, netWorths } = gameState;
+      const { cells, currentPlayer, netWorths, troopMarket } = gameState;
 
       const currentColor = colorList[currentPlayer];
       let ccolor;
@@ -853,13 +863,15 @@ export const gameRouter = t.router({
 
       if (selected && selected?.fillColor == ccolor && currentNetWorth) {
         selected.population++;
-        netWorths[currentPlayer] = currentNetWorth - troopCosts[troop];
+        netWorths[currentPlayer] = currentNetWorth - troopMarket[troop];
+        troopMarket[troop] = troopMarket[troop] * 1.1;
       }
       //update game state
       gameState = {
         cells: cells,
         currentPlayer: currentPlayer,
         netWorths: netWorths,
+        troopMarket: troopMarket,
       };
 
       await ctx.prisma.gameState.update({
