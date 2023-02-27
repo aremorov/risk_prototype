@@ -205,6 +205,8 @@ const GamePage = () => {
       <button className={blueButtonStyle} type="button" onClick={endMove}>
         End Move
       </button>
+      <div>{"Melee Cost: 1, Ranged Cost: 3, Air Cost: 2"}</div>
+
       <button className={blueButtonStyle} type="button" onClick={tradeTroop}>
         Buy Troop
       </button>
