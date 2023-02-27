@@ -27,6 +27,7 @@ type BaseCell = {
   population: number;
   nearby: string[];
   terrain: string;
+  age: number;
 };
 
 const colorList = ["red", "green", "blue"];
@@ -229,11 +230,11 @@ const GamePage = () => {
 
       <div>
         {"Melee Sell Price: " +
-          Number((0.9 * troopMarketPrices["melee"]).toFixed(2)) +
+          Number((0.8 * troopMarketPrices["melee"]).toFixed(2)) +
           ", Ranged Sell Price: " +
-          Number((0.9 * troopMarketPrices["ranged"]).toFixed(2)) +
+          Number((0.8 * troopMarketPrices["ranged"]).toFixed(2)) +
           ", Air Sell Price: " +
-          Number((0.9 * troopMarketPrices["air"]).toFixed(2))}
+          Number((0.8 * troopMarketPrices["air"]).toFixed(2))}
       </div>
       <button
         className={blueButtonStyle}

@@ -12,6 +12,7 @@ type BaseCell = {
   population: number;
   nearby: string[];
   terrain: string;
+  age: number;
 };
 
 type CellProps = {
@@ -75,7 +76,7 @@ const Cell: React.FC<CellProps> = ({
 
       <text
         x={cell.xposition + 25}
-        y={cell.yposition + 20}
+        y={cell.yposition + 10}
         fill="black"
         opacity={opacityLevel}
       >
@@ -83,7 +84,7 @@ const Cell: React.FC<CellProps> = ({
       </text>
       <text
         x={cell.xposition + 25}
-        y={cell.yposition + 35}
+        y={cell.yposition + 25}
         fill="black"
         opacity={opacityLevel}
       >
@@ -91,11 +92,20 @@ const Cell: React.FC<CellProps> = ({
       </text>
       <text
         x={cell.xposition}
-        y={cell.yposition + 55}
+        y={cell.yposition + 40}
         fill="black"
         opacity={opacityLevel}
       >
         {cell.troop + " " + cell.population.toString()}
+      </text>
+
+      <text
+        x={cell.xposition}
+        y={cell.yposition + 55}
+        fill="black"
+        opacity={opacityLevel}
+      >
+        {"Age: " + cell.age}
       </text>
     </>
   );

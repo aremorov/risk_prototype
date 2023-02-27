@@ -15,6 +15,7 @@ type BaseCell = {
   population: number;
   nearby: string[];
   terrain: string;
+  age: number;
 };
 
 const colorList = ["red", "green", "blue"];
@@ -41,13 +42,14 @@ const initialCellArray: BaseCell[] = [
   {
     shape: "M 0,0 100,0 100,100 0,100 Z",
     territory: "A0",
-    fillColor: "red",
+    fillColor: "green",
     xposition: 20,
     yposition: 20,
-    troop: "ranged",
-    population: 10,
+    troop: "melee",
+    population: 8,
     nearby: ["A1", "A5"],
     terrain: "hills",
+    age: 0,
   },
   {
     shape: "M 100,0 200,0 200,100 100,100 Z",
@@ -55,10 +57,11 @@ const initialCellArray: BaseCell[] = [
     fillColor: "blue",
     xposition: 120,
     yposition: 20,
-    troop: "air",
-    population: 13,
+    troop: "melee",
+    population: 2,
     nearby: ["A0", "A2", "A6"],
-    terrain: "plains",
+    terrain: "hills",
+    age: 0,
   },
   {
     shape: "M 200,0 300,0 300,100 200,100 Z",
@@ -66,10 +69,11 @@ const initialCellArray: BaseCell[] = [
     fillColor: "blue",
     xposition: 220,
     yposition: 20,
-    troop: "melee",
-    population: 2,
+    troop: "air",
+    population: 4,
     nearby: ["A1", "A3", "A7"],
-    terrain: "forest",
+    terrain: "hills",
+    age: 0,
   },
   {
     shape: "M 300,0 400,0 400,100 300,100 Z",
@@ -78,64 +82,70 @@ const initialCellArray: BaseCell[] = [
     xposition: 320,
     yposition: 20,
     troop: "air",
-    population: 2,
+    population: 1,
     nearby: ["A2", "A4", "A8"],
-    terrain: "hills",
+    terrain: "plains",
+    age: 0,
   },
   {
     shape: "M 400,0 500,0 500,100 400,100 Z",
     territory: "A4",
-    fillColor: "green",
+    fillColor: "blue",
     xposition: 420,
     yposition: 20,
     troop: "ranged",
-    population: 1,
+    population: 3,
     nearby: ["A3", "A9"],
-    terrain: "hills",
+    terrain: "plains",
+    age: 0,
   },
   {
     shape: "M 0,100 100,100 100,200 0,200 Z",
     territory: "A5",
-    fillColor: "blue",
+    fillColor: "green",
     xposition: 20,
     yposition: 120,
     troop: "ranged",
-    population: 3,
+    population: 4,
     nearby: ["A0", "A10", "A6"],
-    terrain: "plains",
+    terrain: "forest",
+    age: 0,
   },
   {
     shape: "M 100,100 200,100 200,200 100,200 Z",
     territory: "A6",
-    fillColor: "blue",
+    fillColor: "green",
     xposition: 120,
     yposition: 120,
-    troop: "melee",
-    population: 1,
+    troop: "ranged",
+    population: 9,
     nearby: ["A5", "A7", "A1", "A11"],
-    terrain: "hills",
+    terrain: "forest",
+    age: 0,
   },
   {
     shape: "M 200,100 300,100 300,200 200,200 Z",
     territory: "A7",
-    fillColor: "red",
+    fillColor: "green",
     xposition: 220,
     yposition: 120,
-    troop: "melee",
-    population: 6,
+    troop: "ranged",
+    population: 1,
     nearby: ["A6", "A8", "A2", "A12"],
-    terrain: "forest",
+    terrain: "plains",
+    age: 0,
   },
   {
     shape: "M 300,100 400,100 400,200 300,200 Z",
     territory: "A8",
-    fillColor: "blue",
+    fillColor: "red",
     xposition: 320,
     yposition: 120,
     troop: "melee",
-    population: 6,
+    population: 4,
     nearby: ["A7", "A9", "A3", "A13"],
-    terrain: "hills",
+    terrain: "plains",
+    age: 0,
   },
   {
     shape: "M 400,100 500,100 500,200 400,200 Z",
@@ -143,10 +153,11 @@ const initialCellArray: BaseCell[] = [
     fillColor: "green",
     xposition: 420,
     yposition: 120,
-    troop: "air",
-    population: 3,
+    troop: "ranged",
+    population: 6,
     nearby: ["A4", "A14", "A8"],
     terrain: "hills",
+    age: 0,
   },
   {
     shape: "M 0,200 100,200 100,300 0,300 Z",
@@ -154,10 +165,11 @@ const initialCellArray: BaseCell[] = [
     fillColor: "blue",
     xposition: 20,
     yposition: 220,
-    troop: "ranged",
-    population: 8,
+    troop: "air",
+    population: 1,
     nearby: ["A5", "A15", "A11"],
-    terrain: "hills",
+    terrain: "plains",
+    age: 0,
   },
   {
     shape: "M 100,200 200,200 200,300 100,300 Z",
@@ -165,10 +177,11 @@ const initialCellArray: BaseCell[] = [
     fillColor: "blue",
     xposition: 120,
     yposition: 220,
-    troop: "air",
+    troop: "melee",
     population: 8,
     nearby: ["A10", "A12", "A6", "A16"],
     terrain: "hills",
+    age: 0,
   },
   {
     shape: "M 200,200 300,200 300,300 200,300 Z",
@@ -176,32 +189,35 @@ const initialCellArray: BaseCell[] = [
     fillColor: "blue",
     xposition: 220,
     yposition: 220,
-    troop: "melee",
-    population: 3,
+    troop: "air",
+    population: 4,
     nearby: ["A11", "A13", "A7", "A17"],
     terrain: "forest",
+    age: 0,
   },
   {
     shape: "M 300,200 400,200 400,300 300,300 Z",
     territory: "A13",
-    fillColor: "green",
+    fillColor: "blue",
     xposition: 320,
     yposition: 220,
     troop: "air",
     population: 6,
     nearby: ["A12", "A14", "A8", "A18"],
     terrain: "plains",
+    age: 0,
   },
   {
     shape: "M 400,200 500,200 500,300 400,300 Z",
     territory: "A14",
-    fillColor: "red",
+    fillColor: "green",
     xposition: 420,
     yposition: 220,
     troop: "melee",
     population: 5,
     nearby: ["A9", "A19", "A13"],
-    terrain: "hills",
+    terrain: "forest",
+    age: 0,
   },
   {
     shape: "M 0,300 100,300 100,400 0,400 Z",
@@ -209,109 +225,119 @@ const initialCellArray: BaseCell[] = [
     fillColor: "green",
     xposition: 20,
     yposition: 320,
-    troop: "ranged",
-    population: 4,
+    troop: "air",
+    population: 9,
     nearby: ["A10", "A20", "A16"],
     terrain: "forest",
+    age: 0,
   },
   {
     shape: "M 100,300 200,300 200,400 100,400 Z",
     territory: "A16",
-    fillColor: "green",
+    fillColor: "red",
     xposition: 120,
     yposition: 320,
-    troop: "ranged",
+    troop: "melee",
     population: 8,
     nearby: ["A15", "A17", "A11", "A21"],
-    terrain: "forest",
+    terrain: "hills",
+    age: 0,
   },
   {
     shape: "M 200,300 300,300 300,400 200,400 Z",
     territory: "A17",
-    fillColor: "blue",
+    fillColor: "green",
     xposition: 220,
     yposition: 320,
-    troop: "air",
+    troop: "melee",
     population: 8,
     nearby: ["A16", "A18", "A12", "A22"],
     terrain: "forest",
+    age: 0,
   },
   {
     shape: "M 300,300 400,300 400,400 300,400 Z",
     territory: "A18",
-    fillColor: "red",
+    fillColor: "blue",
     xposition: 320,
     yposition: 320,
-    troop: "ranged",
-    population: 9,
+    troop: "air",
+    population: 1,
     nearby: ["A17", "A19", "A13", "A23"],
-    terrain: "forest",
+    terrain: "hills",
+    age: 0,
   },
   {
     shape: "M 400,300 500,300 500,400 400,400 Z",
     territory: "A19",
-    fillColor: "blue",
+    fillColor: "green",
     xposition: 420,
     yposition: 320,
-    troop: "air",
-    population: 7,
+    troop: "ranged",
+    population: 4,
     nearby: ["A14", "A24", "A18"],
-    terrain: "forest",
+    terrain: "plains",
+    age: 0,
   },
   {
     shape: "M 0,400 100,400 100,500 0,500 Z",
     territory: "A20",
-    fillColor: "green",
+    fillColor: "red",
     xposition: 20,
     yposition: 420,
-    troop: "air",
-    population: 1,
+    troop: "melee",
+    population: 3,
     nearby: ["A15", "A21"],
-    terrain: "plains",
+    terrain: "hills",
+    age: 0,
   },
   {
     shape: "M 100,400 200,400 200,500 100,500 Z",
     territory: "A21",
-    fillColor: "blue",
+    fillColor: "green",
     xposition: 120,
     yposition: 420,
-    troop: "ranged",
-    population: 5,
+    troop: "melee",
+    population: 2,
     nearby: ["A20", "A22", "A16"],
     terrain: "forest",
+    age: 0,
   },
   {
     shape: "M 200,400 300,400 300,500 200,500 Z",
     territory: "A22",
-    fillColor: "green",
+    fillColor: "blue",
     xposition: 220,
     yposition: 420,
-    troop: "melee",
-    population: 2,
+    troop: "air",
+    population: 6,
     nearby: ["A21", "A23", "A17"],
-    terrain: "forest",
+    terrain: "plains",
+    age: 0,
   },
   {
     shape: "M 300,400 400,400 400,500 300,500 Z",
     territory: "A23",
-    fillColor: "blue",
+    fillColor: "red",
     xposition: 320,
     yposition: 420,
-    troop: "air",
+    troop: "melee",
     population: 6,
     nearby: ["A22", "A24", "A18"],
-    terrain: "hills",
+    terrain: "forest",
+    age: 0,
   },
   {
     shape: "M 400,400 500,400 500,500 400,500 Z",
     territory: "A24",
-    fillColor: "blue",
+    fillColor: "green",
     xposition: 420,
     yposition: 420,
-    troop: "melee",
-    population: 3,
+    troop: "air",
+    population: 5,
     nearby: ["A19", "A23"],
-    terrain: "forest",
+    terrain: "plains",
+    age: 0,
   },
 ];
 
@@ -547,6 +573,7 @@ export const gameRouter = t.router({
                 cell.population = battleResults;
                 selected.population = 1; //attacking cell
                 cell.troop = "air"; //change troop type
+                cell.age = 0; //new territory
               }
               if (battleResults < 0) {
                 //defenders win, just change population
@@ -572,6 +599,7 @@ export const gameRouter = t.router({
                 cell.population = battleResults;
                 selected.population = 1; //attacking cell
                 cell.troop = "air"; //change troop type
+                cell.age = 0; //new territory
               }
               if (battleResults < 0) {
                 //defenders win, just change population
@@ -595,6 +623,7 @@ export const gameRouter = t.router({
                 cell.population = battleResults;
                 selected.population = 1; //attacking cell
                 cell.troop = "air"; //change troop type
+                cell.age = 0; //new territory
               }
               if (battleResults < 0) {
                 //defenders win, just change population
@@ -627,6 +656,7 @@ export const gameRouter = t.router({
                 cell.population = battleResults;
                 selected.population = 1; //attacking cell
                 cell.troop = "melee"; //change troop type
+                cell.age = 0; //new territory
               }
               if (battleResults < 0) {
                 //defenders win, just change population
@@ -652,6 +682,7 @@ export const gameRouter = t.router({
                 cell.population = battleResults;
                 selected.population = 1; //attacking cell
                 cell.troop = "melee"; //change troop type
+                cell.age = 0; //new territory
               }
               if (battleResults < 0) {
                 //defenders win, just change population
@@ -675,6 +706,7 @@ export const gameRouter = t.router({
                 cell.population = battleResults;
                 selected.population = 1; //attacking cell
                 cell.troop = "melee"; //change troop type
+                cell.age = 0; //new territory
               }
               if (battleResults < 0) {
                 //defenders win, just change population
@@ -712,6 +744,7 @@ export const gameRouter = t.router({
                 cell.population = battleResults;
                 selected.population = 1; //attacking cell
                 cell.troop = "ranged"; //change troop type
+                cell.age = 0; //new territory
               }
               if (battleResults < 0) {
                 //defenders win, just change population
@@ -736,6 +769,7 @@ export const gameRouter = t.router({
                 cell.population = battleResults;
                 selected.population = 1; //attacking cell
                 cell.troop = "ranged"; //change troop type
+                cell.age = 0; //new territory
               }
               if (battleResults < 0) {
                 //defenders win, just change population
@@ -759,6 +793,7 @@ export const gameRouter = t.router({
                 cell.population = battleResults;
                 selected.population = 1; //attacking cell
                 cell.troop = "ranged"; //change troop type
+                cell.age = 0; //new territory
               }
               if (battleResults < 0) {
                 //defenders win, just change population
@@ -812,10 +847,11 @@ export const gameRouter = t.router({
       //change player index to next one (next turn):
       currentPlayer = (currentPlayer + 1) % 3;
 
-      //update net worths
+      //update net worths, age
       cells.forEach((cell) => {
         const player = colorList.findIndex((color) => color == cell.fillColor);
-        netWorths[player]++;
+        netWorths[player] += 1.1 ** cell.age;
+        cell.age++;
       });
 
       gameState = {
@@ -877,7 +913,7 @@ export const gameRouter = t.router({
           netWorths[currentPlayer] = currentNetWorth - troopMarket[troop];
         }
         if (tradeType == "sell") {
-          troopMarket[troop] = troopMarket[troop] * 0.9;
+          troopMarket[troop] = troopMarket[troop] * 0.8;
           selected.population--;
           //get filled at changed price:
           netWorths[currentPlayer] = currentNetWorth + troopMarket[troop];
