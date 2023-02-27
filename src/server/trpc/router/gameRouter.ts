@@ -878,7 +878,7 @@ export const gameRouter = t.router({
         }
         if (tradeType == "sell") {
           troopMarket[troop] = troopMarket[troop] * 0.9;
-          selected.population++;
+          selected.population--;
           //get filled at changed price:
           netWorths[currentPlayer] = currentNetWorth + troopMarket[troop];
         }

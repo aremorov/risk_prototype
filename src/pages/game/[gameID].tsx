@@ -204,9 +204,9 @@ const GamePage = () => {
   return (
     <div>
       <div>Map</div>
-      <div>{"Red net worth: " + netWorths[0]}</div>
-      <div>{"Green net worth: " + netWorths[1]}</div>
-      <div>{"Blue net worth: " + netWorths[2]}</div>
+      <div>{"Red net worth: " + Number(netWorths[0]?.toFixed(3))}</div>
+      <div>{"Green net worth: " + Number(netWorths[1]?.toFixed(3))}</div>
+      <div>{"Blue net worth: " + Number(netWorths[2]?.toFixed(3))}</div>
 
       <svg height="500" width="500">
         {listItems}
@@ -220,20 +220,20 @@ const GamePage = () => {
       </button>
       <div>
         {"Melee Buy Price: " +
-          1.1 * troopMarketPrices["melee"] +
+          Number((1.1 * troopMarketPrices["melee"]).toFixed(2)) +
           ", Ranged Buy Price: " +
-          1.1 * troopMarketPrices["ranged"] +
+          Number((1.1 * troopMarketPrices["ranged"]).toFixed(2)) +
           ", Air Buy Price: " +
-          1.1 * troopMarketPrices["air"]}
+          Number((1.1 * troopMarketPrices["air"]).toFixed(2))}
       </div>
 
       <div>
         {"Melee Sell Price: " +
-          0.9 * troopMarketPrices["melee"] +
+          Number((0.9 * troopMarketPrices["melee"]).toFixed(2)) +
           ", Ranged Sell Price: " +
-          0.9 * troopMarketPrices["ranged"] +
+          Number((0.9 * troopMarketPrices["ranged"]).toFixed(2)) +
           ", Air Sell Price: " +
-          0.9 * troopMarketPrices["air"]}
+          Number((0.9 * troopMarketPrices["air"]).toFixed(2))}
       </div>
       <button
         className={blueButtonStyle}
