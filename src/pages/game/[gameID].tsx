@@ -37,6 +37,7 @@ const GamePage = () => {
   const [cells, setCells] = useState<BaseCell[]>([]);
   const [netWorths, setNetWorths] = useState<number[]>([]);
   const [nextMove, setNextMove] = useState<boolean>(false);
+  const [tradingTroop, setTradingTroop] = useState<boolean>(false);
 
   useEffect(() => {
     const syncPieces = () => {
@@ -69,7 +70,6 @@ const GamePage = () => {
         id: query?.gameID as unknown as string,
         move: updateMoveRef.current,
       });
-
       updateMoveRef.current = null;
     }
   }, [updateMoveMutation, query?.gameID]);
@@ -86,16 +86,37 @@ const GamePage = () => {
         id: query?.gameID as unknown as string,
       });
       setNextMove(false);
+      setSelected(null);
     }
   }, [nextMove, nextMoveMutation, query?.gameID]);
+
+  const tradeTroop = () => {
+    setTradingTroop(true);
+  };
+
+  type UpdateTradingTroop = string | null;
+
+  const tradeTroopMutation = trpc.game.tradeTroop.useMutation();
+  const updateTradingTroop = useRef<UpdateTradingTroop>(null);
+
+  useEffect(() => {
+    if (tradingTroop) {
+      if (updateTradingTroop.current !== null) {
+        tradeTroopMutation.mutate({
+          id: query?.gameID as unknown as string,
+          territory: updateTradingTroop.current,
+        });
+        updateTradingTroop.current = null;
+      }
+      setTradingTroop(false);
+    }
+  }, [tradingTroop, tradeTroopMutation, query?.gameID]);
 
   const handleClickMaker = (cell: BaseCell) => () => {
     //define current color:
     const currentColor = colorList[currentPlayer];
-    let ccolor = "red";
-    if (currentColor) {
-      ccolor = currentColor;
-    }
+    let ccolor;
+    currentColor ? (ccolor = currentColor) : (ccolor = "red");
 
     // select the cell it is on, and cell color (so all territories are shown)
     if (selected === null && ccolor == cell.fillColor) {
@@ -103,14 +124,17 @@ const GamePage = () => {
       setSelected(cell);
     }
 
+    if (cell) {
+      updateTradingTroop.current = cell.territory;
+    }
     if (selected) {
       updateMoveRef.current = {
         territory1: selected.territory,
         territory2: cell.territory,
       };
+
       setSelected(null);
     }
-
     //move, if selected:
     if (selected !== null) {
       //set the necessary UI to visible here
@@ -138,10 +162,8 @@ const GamePage = () => {
 
   const listItems = cells.map((cell) => {
     const currentColor = colorList[currentPlayer];
-    let ccolor = "red";
-    if (currentColor) {
-      ccolor = currentColor;
-    }
+    let ccolor;
+    currentColor ? (ccolor = currentColor) : (ccolor = "red");
 
     return (
       //NEED TO ADD IN DATA FROM ALL CELLS, SO CAN SHOW WHICH CELLS ARE NEARBY/ATTACKABLE
@@ -173,6 +195,9 @@ const GamePage = () => {
       </button>
       <button className={blueButtonStyle} type="button" onClick={endMove}>
         End Move
+      </button>
+      <button className={blueButtonStyle} type="button" onClick={tradeTroop}>
+        Buy Troop
       </button>
     </div>
   );

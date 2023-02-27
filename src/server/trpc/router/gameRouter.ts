@@ -485,10 +485,9 @@ export const gameRouter = t.router({
       const { cells, currentPlayer, netWorths } = gameState;
 
       const currentColor = colorList[currentPlayer];
-      let ccolor = "red";
-      if (currentColor) {
-        ccolor = currentColor;
-      }
+      let ccolor;
+      currentColor ? (ccolor = currentColor) : (ccolor = "red");
+
       const selected = cells.find(
         (BaseCell) => BaseCell.territory === territory1
       );
@@ -800,6 +799,55 @@ export const gameRouter = t.router({
         netWorths[player]++;
       });
 
+      gameState = {
+        cells: cells,
+        currentPlayer: currentPlayer,
+        netWorths: netWorths,
+      };
+
+      await ctx.prisma.gameState.update({
+        where: {
+          id,
+        },
+        data: {
+          game_state: JSON.stringify(gameState),
+        },
+      });
+      return true;
+    }),
+
+  tradeTroop: t.procedure
+    .input(z.object({ id: z.string(), territory: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const { id, territory } = input;
+
+      //gets game:
+      const game = await ctx.prisma.gameState.findFirstOrThrow({
+        where: {
+          id,
+        },
+      });
+      //get game state data
+      let gameState = JSON.parse(game.game_state) as GameStateObject;
+
+      const { cells, currentPlayer, netWorths } = gameState;
+
+      const currentColor = colorList[currentPlayer];
+      let ccolor;
+      currentColor ? (ccolor = currentColor) : (ccolor = "red");
+
+      const selected = cells.find(
+        (BaseCell) => BaseCell.territory === territory
+      );
+
+      const currentNetWorth = netWorths[currentPlayer];
+
+      if (selected && selected?.fillColor == ccolor && currentNetWorth) {
+        selected.population++;
+        netWorths[currentPlayer] = currentNetWorth - 5;
+      }
+
+      //update game state
       gameState = {
         cells: cells,
         currentPlayer: currentPlayer,
