@@ -27,6 +27,12 @@ type CellProps = {
   ccolor: string | null;
 };
 
+const troopToIcon = {
+  melee: Sword,
+  ranged: Ranged,
+  air: Air,
+};
+
 const Cell: React.FC<CellProps> = ({
   cell,
   selectedFull,
@@ -35,6 +41,8 @@ const Cell: React.FC<CellProps> = ({
   allCells,
   ccolor,
 }) => {
+  const Icon = troopToIcon[cell.troop];
+
   let opacityLevel = 0.2;
   if (selectedFull) {
     opacityLevel = 1;
@@ -51,18 +59,6 @@ const Cell: React.FC<CellProps> = ({
 
   if (!selectedFull && nearbyCurrentColor) {
     opacityLevel = 0.5;
-  }
-
-  let icon = <Sword xcenter={cell.xposition} ycenter={cell.yposition}></Sword>;
-
-  if (cell.troop == "ranged") {
-    icon = (
-      <Ranged xcenter={cell.xposition} ycenter={cell.yposition + 10}></Ranged>
-    );
-  }
-
-  if (cell.troop == "air") {
-    icon = <Air xcenter={cell.xposition} ycenter={cell.yposition + 10}></Air>;
   }
 
   return (
@@ -119,7 +115,7 @@ const Cell: React.FC<CellProps> = ({
       >
         {"Age: " + cell.age}
       </text>
-      {icon}
+      <Icon xcenter={cell.xposition} ycenter={cell.yposition} />
     </>
   );
 };

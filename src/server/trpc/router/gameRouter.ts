@@ -341,8 +341,8 @@ const initialCellArray: BaseCell[] = [
   },
 ];
 
-const zTradeType = z.enum(["buy", "sell"]);
-type zTradeType = z.infer<typeof zTroopTypes>; // "melee", "ranged", "air"
+const zTradeType = z.enum(["buy", "sell"]); //SCHEMA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+type zTradeType = z.infer<typeof zTradeType>; // "melee", "ranged", "air"
 
 const initialTroopCosts = { melee: 1, ranged: 3, air: 2 }; //cost of melee, ranged, air
 
