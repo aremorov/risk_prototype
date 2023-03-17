@@ -1,4 +1,7 @@
 import React from "react";
+import Sword from "./Sword";
+import Ranged from "./Ranged";
+import Air from "./Air";
 
 type TroopType = "melee" | "ranged" | "air";
 
@@ -50,6 +53,18 @@ const Cell: React.FC<CellProps> = ({
     opacityLevel = 0.5;
   }
 
+  let icon = <Sword xcenter={cell.xposition} ycenter={cell.yposition}></Sword>;
+
+  if (cell.troop == "ranged") {
+    icon = (
+      <Ranged xcenter={cell.xposition} ycenter={cell.yposition + 10}></Ranged>
+    );
+  }
+
+  if (cell.troop == "air") {
+    icon = <Air xcenter={cell.xposition} ycenter={cell.yposition + 10}></Air>;
+  }
+
   return (
     <>
       {/* <rect
@@ -62,7 +77,6 @@ const Cell: React.FC<CellProps> = ({
         stroke={selected ? "magenta" : "black"}
         stroke-width={selectedFull ? 10 : 0}
       /> */}
-
       <path
         d={cell.shape}
         onClick={handleClick}
@@ -73,7 +87,6 @@ const Cell: React.FC<CellProps> = ({
         stroke-width={selectedFull ? 10 : 0}
         opacity={opacityLevel}
       />
-
       <text
         x={cell.xposition + 25}
         y={cell.yposition + 10}
@@ -98,7 +111,6 @@ const Cell: React.FC<CellProps> = ({
       >
         {cell.troop + " " + cell.population.toString()}
       </text>
-
       <text
         x={cell.xposition}
         y={cell.yposition + 55}
@@ -107,6 +119,7 @@ const Cell: React.FC<CellProps> = ({
       >
         {"Age: " + cell.age}
       </text>
+      {icon}
     </>
   );
 };
