@@ -2,6 +2,9 @@ import React from "react";
 import Sword from "./Sword";
 import Ranged from "./Ranged";
 import Air from "./Air";
+import Plains from "./Plains";
+import Hills from "./Hills";
+import Forest from "./Forest";
 
 type TroopType = "melee" | "ranged" | "air";
 
@@ -31,6 +34,12 @@ const troopToIcon = {
   melee: Sword,
   ranged: Ranged,
   air: Air,
+};
+
+const terrainToBackground = {
+  hills: Hills,
+  plains: Plains,
+  forest: Forest,
 };
 
 const Cell: React.FC<CellProps> = ({

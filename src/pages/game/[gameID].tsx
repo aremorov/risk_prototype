@@ -203,54 +203,69 @@ const GamePage = () => {
   });
   //console.log(selected == null);
   return (
-    <div>
-      <div>Map</div>
-      <div>{"Red net worth: " + Number(netWorths[0]?.toFixed(3))}</div>
-      <div>{"Green net worth: " + Number(netWorths[1]?.toFixed(3))}</div>
-      <div>{"Blue net worth: " + Number(netWorths[2]?.toFixed(3))}</div>
-
+    <main className="grid grid-cols-2 gap-4 p-8">
       <svg height="500" width="500">
         {listItems}
       </svg>
 
-      <button className={blueButtonStyle} type="button" onClick={handleShare}>
-        share game link
-      </button>
-      <button className={blueButtonStyle} type="button" onClick={endMove}>
-        End Move
-      </button>
-      <div>
-        {"Melee Buy Price: " +
-          Number((1.1 * troopMarketPrices["melee"]).toFixed(2)) +
-          ", Ranged Buy Price: " +
-          Number((1.1 * troopMarketPrices["ranged"]).toFixed(2)) +
-          ", Air Buy Price: " +
-          Number((1.1 * troopMarketPrices["air"]).toFixed(2))}
-      </div>
+      <div className="flex flex-col gap-3 md:px-12">
+        <div className="flex flex-col gap-1">
+          <div>{`Net worths: [Red: ${Math.round(
+            1000 * netWorths[0]
+          )}] [Green: ${Math.round(1000 * netWorths[1])}] [Blue: ${Math.round(
+            1000 * netWorths[2]
+          )}]`}</div>
+        </div>
 
-      <div>
-        {"Melee Sell Price: " +
-          Number((0.8 * troopMarketPrices["melee"]).toFixed(2)) +
-          ", Ranged Sell Price: " +
-          Number((0.8 * troopMarketPrices["ranged"]).toFixed(2)) +
-          ", Air Sell Price: " +
-          Number((0.8 * troopMarketPrices["air"]).toFixed(2))}
+        <div className="flex flex-row items-center gap-2">
+          <button
+            className={blueButtonStyle}
+            type="button"
+            onClick={handleShare}
+          >
+            share game link
+          </button>
+          <button className={blueButtonStyle} type="button" onClick={endMove}>
+            End Move
+          </button>
+        </div>
+
+        <div>
+          {"Melee Buy Price: " +
+            Number((1.1 * 1000 * troopMarketPrices["melee"]).toFixed(2)) +
+            ", Ranged Buy Price: " +
+            Number((1.1 * 1000 * troopMarketPrices["ranged"]).toFixed(2)) +
+            ", Air Buy Price: " +
+            Number((1.1 * 1000 * troopMarketPrices["air"]).toFixed(2))}
+        </div>
+
+        <div>
+          {"Melee Sell Price: " +
+            Number((0.8 * 1000 * troopMarketPrices["melee"]).toFixed(2)) +
+            ", Ranged Sell Price: " +
+            Number((0.8 * 1000 * troopMarketPrices["ranged"]).toFixed(2)) +
+            ", Air Sell Price: " +
+            Number((0.8 * 1000 * troopMarketPrices["air"]).toFixed(2))}
+        </div>
+
+        <div className="flex flex-row items-center gap-2">
+          <button
+            className={blueButtonStyle}
+            type="button"
+            onClick={() => tradeTroop("buy")}
+          >
+            Buy Troop
+          </button>
+          <button
+            className={blueButtonStyle}
+            type="button"
+            onClick={() => tradeTroop("sell")}
+          >
+            Sell Troop
+          </button>
+        </div>
       </div>
-      <button
-        className={blueButtonStyle}
-        type="button"
-        onClick={() => tradeTroop("buy")}
-      >
-        Buy Troop
-      </button>
-      <button
-        className={blueButtonStyle}
-        type="button"
-        onClick={() => tradeTroop("sell")}
-      >
-        Sell Troop
-      </button>
-    </div>
+    </main>
   );
 };
 
